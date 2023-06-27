@@ -27,11 +27,12 @@ public class User {
     private String phoneNumber;
     private String parentContact;
     private String password;
-    @Column(insertable = false,updatable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer createdBy;
+    private Integer updatedBy;
     private Boolean deleted;
 
     @ManyToMany
