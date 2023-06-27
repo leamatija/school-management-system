@@ -1,0 +1,33 @@
+package com.internship.spring.project.schoolmanagementsystem.domain.entity;
+
+import lombok.*;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name = "potential_answers")
+public class PotentialAnswer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String value;
+    private Boolean valid;
+    private Integer createdBy;
+    private Integer updatedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id",referencedColumnName = "id")
+    private ExamQuestion examQuestion;
+
+    @ManyToMany(mappedBy = "potentialAnswers")
+    private List<ExamResult> examResults = new ArrayList<>();
+
+}
