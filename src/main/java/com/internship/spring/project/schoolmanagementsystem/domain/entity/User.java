@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "users")
 public class User {
 
@@ -33,7 +34,7 @@ public class User {
     private LocalDateTime updatedAt;
     private Integer createdBy;
     private Integer updatedBy;
-    private Boolean deleted;
+    private Boolean deleted=false;
 
     @ManyToMany
     @JoinTable(name = "enrollment",

@@ -24,6 +24,6 @@ public class UserDTO {
     private String parentContact;
     @NotNull(message = "Password is required")
     private String password;
-    private Integer createdBy;
+
 
 }

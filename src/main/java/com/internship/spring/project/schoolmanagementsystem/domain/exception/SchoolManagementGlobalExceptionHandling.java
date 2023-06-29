@@ -1,5 +1,6 @@
 package com.internship.spring.project.schoolmanagementsystem.domain.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,11 @@ public class SchoolManagementGlobalExceptionHandling extends ResponseEntityExcep
         return new ResponseEntity<>(resp,HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, HttpServletRequest request) {
+        ExceptionResponse resp = new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), Date.from(Instant.now()));
+        return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+    }
     private Map<String,String> getRequiredFields(MethodArgumentNotValidException ex){
         Map<String,String> errors= new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(e ->{errors.put(e.getField(),e.getDefaultMessage());});
