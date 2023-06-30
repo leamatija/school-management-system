@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,9 @@ public class Classroom {
     private Date updatedAt;
     private Integer createdBy;
     private Integer updatedBy;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private Boolean active;
     private Boolean deleted;
 
     @ManyToMany(mappedBy = "classrooms")
