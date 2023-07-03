@@ -36,7 +36,7 @@ public class ClassSession {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id",referencedColumnName = "id")
-    private User user;
+    private User teacher;
 
     @ManyToOne
     @JoinColumn(name = "subject_id",referencedColumnName = "id")

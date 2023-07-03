@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,15 +29,15 @@ public class Classroom {
     private Date updatedAt;
     private Integer createdBy;
     private Integer updatedBy;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Boolean active;
     private Boolean deleted;
 
     @ManyToMany(mappedBy = "classrooms")
     private List<User> students = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "classroom_id",referencedColumnName = "id")
     private List<ClassSession> classSessions = new ArrayList<>();
 

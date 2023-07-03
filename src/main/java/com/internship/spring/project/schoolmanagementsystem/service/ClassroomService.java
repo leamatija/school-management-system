@@ -1,6 +1,9 @@
 package com.internship.spring.project.schoolmanagementsystem.service;
 
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomSessionRequestDTO;
+
+import javax.validation.Valid;
 import java.util.List;
 
 public interface ClassroomService {
@@ -10,5 +13,5 @@ public interface ClassroomService {
     List<ClassroomDTO> getAllClassrooms();
     ClassroomDTO getClassroomById(Integer id);
     void addStudentsToClassroom (Integer classroomId, List<Integer> studentsId);
-    void addClassSessionsToClass (Integer classroomId, List<Integer> classSessionsId, Integer teacherId);
+    void addClassSessionsToClass (Integer classroomId, @Valid ClassroomSessionRequestDTO req);
 }

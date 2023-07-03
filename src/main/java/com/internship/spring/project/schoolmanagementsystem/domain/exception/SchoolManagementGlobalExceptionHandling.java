@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,5 +40,18 @@ public class SchoolManagementGlobalExceptionHandling extends ResponseEntityExcep
         Map<String,String> errors= new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(e ->{errors.put(e.getField(),e.getDefaultMessage());});
         return errors;
+    }
+
+
+    @ExceptionHandler
+    public ResponseEntity<Object> handleConstraintException(ConstraintException ex, HttpServletRequest request) {
+        ExceptionResponse resp = new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), Date.from(Instant.now()));
+        return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
+        ExceptionResponse resp = new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), Date.from(Instant.now()));
+        return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
     }
 }

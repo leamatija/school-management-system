@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -19,7 +20,8 @@ public class Assignment {
     private Integer id;
     private String name;
     private String fileName;
-    private String expirationDate;
+    private LocalDate expirationDate;
+    private Boolean deleted;
     private Integer createdBy;
     private Integer updatedBy;
 

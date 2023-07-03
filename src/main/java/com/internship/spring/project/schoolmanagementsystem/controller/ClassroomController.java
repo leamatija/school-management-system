@@ -1,6 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.controller;
 
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomSessionRequestDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomStudentsDTO;
 import com.internship.spring.project.schoolmanagementsystem.service.ClassroomService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,12 @@ public class ClassroomController {
     @PostMapping("/{classroomId}/students")
         public ResponseEntity<Void> addStudentsToClassroom(@PathVariable Integer classroomId, @RequestBody ClassroomStudentsDTO classroomStudentsDTO){
         classroomService.addStudentsToClassroom(classroomId,classroomStudentsDTO.getStudentsId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/{classroomId}/sessions")
+    public ResponseEntity<Void> addClassSessionToClassroom (@PathVariable Integer classroomId, @RequestBody ClassroomSessionRequestDTO req){
+        classroomService.addClassSessionsToClass(classroomId,req);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

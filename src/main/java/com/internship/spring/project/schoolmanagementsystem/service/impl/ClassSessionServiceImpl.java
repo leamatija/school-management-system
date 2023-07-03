@@ -1,6 +1,9 @@
 package com.internship.spring.project.schoolmanagementsystem.service.impl;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassSessionDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.UserDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.entity.ClassSession;
+import com.internship.spring.project.schoolmanagementsystem.domain.entity.Classroom;
+import com.internship.spring.project.schoolmanagementsystem.domain.entity.User;
 import com.internship.spring.project.schoolmanagementsystem.domain.exception.ResourceNotFoundException;
 import com.internship.spring.project.schoolmanagementsystem.domain.mapper.ClassSessionMapper;
 import com.internship.spring.project.schoolmanagementsystem.repository.ClassSessionRepository;
@@ -8,6 +11,7 @@ import com.internship.spring.project.schoolmanagementsystem.service.ClassSession
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,21 +54,14 @@ public class ClassSessionServiceImpl implements ClassSessionService {
                 .collect(Collectors.toList());
     }
 
+    public List<ClassSession> findAllByTeacherAndStartTimeLikeAndFinishTimeLike(User teacher, List<LocalDateTime> startLocalDateTimes, List<LocalDateTime> finishLocalDateTime){
+        return classSessionRepository.findAllByTeacherAndStartTimeInAndFinishTimeIn(teacher,startLocalDateTimes,finishLocalDateTime);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public List<ClassSession> findAllByClassroomAndStartTimeInAndFinishTimeIn(Classroom classroom, List<LocalDateTime> startLocalDateTimes, List<LocalDateTime> finishLcalDateTime) {
+        return classSessionRepository.findAllByClassroomAndStartTimeInAndFinishTimeIn(classroom,startLocalDateTimes,finishLcalDateTime);
+    }
 
 
 }

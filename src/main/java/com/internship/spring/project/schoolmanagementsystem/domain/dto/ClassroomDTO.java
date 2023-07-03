@@ -17,9 +17,9 @@ public class ClassroomDTO {
     @NotEmpty(message = "Capacity can not be empty")
     private Integer capacity;
     @NotEmpty
-    private LocalDateTime startDate;
+    private String  startDate;
     @NotEmpty
-    private LocalDateTime endDate;
+    private String endDate;
     @NotEmpty
     private Boolean active;
 }

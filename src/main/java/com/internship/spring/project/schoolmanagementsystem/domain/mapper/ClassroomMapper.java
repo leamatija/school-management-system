@@ -3,15 +3,18 @@ package com.internship.spring.project.schoolmanagementsystem.domain.mapper;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.Classroom;
 
+import java.time.LocalDate;
+
 public class ClassroomMapper {
 
     public static ClassroomDTO toDto (Classroom c){
         return ClassroomDTO.builder()
+                .id(c.getId())
                 .name(c.getName())
                 .capacity(c.getCapacity())
                 .active(c.getActive())
-                .startDate(c.getStartDate())
-                .endDate(c.getEndDate())
+                .startDate(c.getStartDate().toString())
+                .endDate(c.getEndDate().toString())
                 .build();
     }
 
@@ -20,8 +23,8 @@ public class ClassroomMapper {
                 .name(c.getName())
                 .capacity(c.getCapacity())
                 .active(c.getActive())
-                .startDate(c.getStartDate())
-                .endDate(c.getEndDate())
+                .startDate(LocalDate.parse(c.getStartDate()))
+                .endDate(LocalDate.parse(c.getEndDate()))
                 .build();
     }
 
@@ -29,8 +32,8 @@ public class ClassroomMapper {
         c.setName(cDTO.getName());
         c.setCapacity(cDTO.getCapacity());
         c.setActive(cDTO.getActive());
-        c.setStartDate(cDTO.getStartDate());
-        c.setEndDate(cDTO.getEndDate());
+        c.setStartDate(LocalDate.parse(cDTO.getStartDate()));
+        c.setEndDate(LocalDate.parse(cDTO.getEndDate()));
         c.setActive(cDTO.getActive());
         return c;
     }

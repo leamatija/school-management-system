@@ -42,13 +42,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "classroom_id",referencedColumnName = "id"))
     private List<Classroom> classrooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "teacher")
     private List<ClassSession> classSessions=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Attendance> attendances = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "student")
     private List<AssignmentResult> assignmentResults = new ArrayList<>();
 
 

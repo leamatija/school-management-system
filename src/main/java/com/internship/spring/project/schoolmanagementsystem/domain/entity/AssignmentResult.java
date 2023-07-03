@@ -23,8 +23,11 @@ public class AssignmentResult {
 
     @ManyToOne
     @JoinColumn(name = "student_id",referencedColumnName = "id")
-    private User user;
+    private User student;
 
+    @ManyToOne
+    @JoinColumn(name = "assignment_id",referencedColumnName = "id")
+    private Assignment assignment;
 
 
 }
