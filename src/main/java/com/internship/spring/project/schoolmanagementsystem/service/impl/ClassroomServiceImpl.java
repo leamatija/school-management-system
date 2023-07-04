@@ -106,7 +106,9 @@ public class ClassroomServiceImpl implements ClassroomService {
 
         var startDates = generatedSessionsDate.stream().map(p->p.getFirst()).collect(Collectors.toList());
         var endDates = generatedSessionsDate.stream().map(p->p.getSecond()).collect(Collectors.toList());
-        var existingSession = classSessionService.findAllByTeacherAndStartTimeLikeAndFinishTimeLike(teacher,startDates,endDates);
+
+        var existingSession = classSessionService.findAllByTeacherAndStartTimeInAndFinishTimeIn(teacher,startDates,endDates);
+
         var existingClassroomSessions = classSessionService.findAllByClassroomAndStartTimeInAndFinishTimeIn(classroom,startDates,endDates);
         if (existingSession.size()>0){
             throw new ConstraintException(String.format("Can not add teacher to this booked session because teacher with id %s is already booked",req.getTeacherId()));

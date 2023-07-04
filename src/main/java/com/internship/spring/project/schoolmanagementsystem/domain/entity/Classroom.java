@@ -16,19 +16,15 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "classrooms")
-public class Classroom {
+@EntityListeners(AuditingEntityListener.class)
+public class Classroom extends Auditable<String>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private Integer capacity;
-    private Date createdAt;
-    private Date updatedAt;
-    private Integer createdBy;
-    private Integer updatedBy;
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean active;

@@ -27,11 +27,6 @@ public class ClassSessionServiceImpl implements ClassSessionService {
     }
 
     @Override
-    public ClassSessionDTO addTeacherToClassSession(Integer id, UserDTO userDTO) {
-        return null;
-    }
-
-    @Override
     public ClassSessionDTO updateClassSession(Integer id, ClassSessionDTO classSessionDTO) {
         return classSessionRepository.findById(id)
                 .map(classSession-> ClassSessionMapper.toEntity(classSession,classSessionDTO))
@@ -41,9 +36,11 @@ public class ClassSessionServiceImpl implements ClassSessionService {
     }
 
     @Override
-    public Void deleteClassSession(Integer id) {
-        classSessionRepository.deleteById(id);
-        return null;
+    public void deleteClassSession(Integer id) {
+        classSessionRepository.findById(id).ifPresentOrElse(c->{
+            c.setDeleted(true);
+            classSessionRepository.save(c);
+        },()->new ResourceNotFoundException(String.format("Classroom with id %s not found",id)));
     }
 
     @Override
@@ -54,7 +51,7 @@ public class ClassSessionServiceImpl implements ClassSessionService {
                 .collect(Collectors.toList());
     }
 
-    public List<ClassSession> findAllByTeacherAndStartTimeLikeAndFinishTimeLike(User teacher, List<LocalDateTime> startLocalDateTimes, List<LocalDateTime> finishLocalDateTime){
+    public List<ClassSession> findAllByTeacherAndStartTimeInAndFinishTimeIn(User teacher, List<LocalDateTime> startLocalDateTimes, List<LocalDateTime> finishLocalDateTime){
         return classSessionRepository.findAllByTeacherAndStartTimeInAndFinishTimeIn(teacher,startLocalDateTimes,finishLocalDateTime);
     }
 

@@ -1,6 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.domain.entity;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -11,7 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Table(name = "attentance")
-public class Attendance {
+@EntityListeners(AuditingEntityListener.class)
+public class Attendance extends Auditable<String>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

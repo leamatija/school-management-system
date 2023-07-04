@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ClassSubjectServiceServiceImpl implements ClassSubjectService {
+public class ClassSubjectServiceImpl implements ClassSubjectService {
 
     private final ClassSubjectRepository subjectRepository;
 

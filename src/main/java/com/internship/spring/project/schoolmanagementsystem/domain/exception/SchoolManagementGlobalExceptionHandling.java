@@ -42,7 +42,6 @@ public class SchoolManagementGlobalExceptionHandling extends ResponseEntityExcep
         return errors;
     }
 
-
     @ExceptionHandler
     public ResponseEntity<Object> handleConstraintException(ConstraintException ex, HttpServletRequest request) {
         ExceptionResponse resp = new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), Date.from(Instant.now()));
@@ -52,6 +51,12 @@ public class SchoolManagementGlobalExceptionHandling extends ResponseEntityExcep
     @ExceptionHandler
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
         ExceptionResponse resp = new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), Date.from(Instant.now()));
+        return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> handleStorageException(StorageException ex, HttpServletRequest request) {
+        ExceptionResponse resp = new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), Date.from(Instant.now()));
         return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
     }
 }

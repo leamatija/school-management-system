@@ -1,6 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.domain.entity;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +14,8 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "class_sessions")
-public class ClassSession {
+@EntityListeners(AuditingEntityListener.class)
+public class ClassSession extends Auditable<String>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +23,8 @@ public class ClassSession {
     private String topic;
     private LocalDateTime startTime;
     private LocalDateTime finishTime;
-    private Integer createdBy;
-    private Integer updatedBy;
     private Boolean cancelled;
+    private Boolean deleted;
 
     @OneToOne(mappedBy = "classSession")
     private Exam exam;

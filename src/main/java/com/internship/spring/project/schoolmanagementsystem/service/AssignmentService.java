@@ -12,5 +12,9 @@ public interface AssignmentService {
     List<AssignmentDTO> findAll();
     void deleteAssignment(Integer id);
     AssignmentResultDTO createAssignmentResult (Integer assignmentId, Integer studentId, AssignmentResultDTO req);
+    AssignmentResultDTO findResultById (Integer resultId);
+    List<AssignmentResultDTO> findResultByStudentId( Integer studentId);
+    void deleteResult(Integer id);
+
 
 }

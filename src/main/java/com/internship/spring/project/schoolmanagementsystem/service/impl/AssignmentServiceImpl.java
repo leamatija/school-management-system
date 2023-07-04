@@ -3,6 +3,7 @@ package com.internship.spring.project.schoolmanagementsystem.service.impl;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentResultDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.AssignmentResult;
+import com.internship.spring.project.schoolmanagementsystem.domain.entity.User;
 import com.internship.spring.project.schoolmanagementsystem.domain.exception.ResourceNotFoundException;
 import com.internship.spring.project.schoolmanagementsystem.domain.mapper.AssignmentMapper;
 import com.internship.spring.project.schoolmanagementsystem.repository.AssignmentRepository;
@@ -33,7 +34,6 @@ public class AssignmentServiceImpl implements AssignmentService {
         var filename = UUID.randomUUID().toString().concat(".pdf");
         a.setName(a.getFile().getOriginalFilename() );
         a.setFileName(filename);
-        System.err.println(a);
         storageService.store(a.getFile(),filename);
         var assignmentToSave = AssignmentMapper.toEntity(a);
         assignmentToSave.setClassSession(session);
@@ -72,6 +72,26 @@ public class AssignmentServiceImpl implements AssignmentService {
         result.setTeachersNotes(req.getTeachersNotes());
         result.setGrade(req.getGrade());
         return AssignmentMapper.toResultDTO(assignmentResultRepository.save(result));
+    }
+
+    @Override
+    public AssignmentResultDTO findResultById(Integer resultId) {
+       return assignmentResultRepository.findById(resultId)
+               .map(AssignmentMapper::toResultDTO)
+               .orElseThrow(()-> new ResourceNotFoundException("Result not found"));
+    }
+
+    @Override
+    public List<AssignmentResultDTO> findResultByStudentId(Integer studentId) {
+        User student = userRepository.findById(studentId).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+        return student.getAssignmentResults()
+                .stream().map(AssignmentMapper::toResultDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteResult(Integer id) {
+        assignmentRepository.deleteById(id);
     }
 
 

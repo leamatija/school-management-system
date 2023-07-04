@@ -12,9 +12,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "assignments")
-public class Assignment {
+@EntityListeners(AuditingEntityListener.class)
+public class Assignment extends Auditable<String>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -22,8 +22,6 @@ public class Assignment {
     private String fileName;
     private LocalDate expirationDate;
     private Boolean deleted;
-    private Integer createdBy;
-    private Integer updatedBy;
 
     @ManyToOne
     @JoinColumn(name = "session_id",referencedColumnName = "id")

@@ -20,8 +20,6 @@ public class PotentialAnswer {
     private Integer id;
     private String value;
     private Boolean valid;
-    private Integer createdBy;
-    private Integer updatedBy;
 
     @ManyToOne
     @JoinColumn(name = "question_id",referencedColumnName = "id")

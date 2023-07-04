@@ -49,10 +49,42 @@ public class ClassSessionController {
         return ResponseEntity.ok(assignmentService.createAssignment(classSessionId,req));
     }
 
+    @GetMapping("/{classSessionId}/assignment/{assignmentId}")
+    public ResponseEntity<AssignmentDTO> findAssignmentById (@PathVariable Integer classSessionId,@PathVariable Integer assignmentId){
+        return ResponseEntity.ok(assignmentService.findById(assignmentId));
+    }
+
+    @GetMapping("/assignment/list")
+    public ResponseEntity<List<AssignmentDTO>> findAllAssignments (){
+        return ResponseEntity.ok(assignmentService.findAll());
+    }
+
+    @DeleteMapping("/assignment/{assignmentId}/delete")
+    public ResponseEntity<Void> deleteAssignment (@PathVariable Integer assignmentId){
+        assignmentService.deleteAssignment(assignmentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/assignment/{assignmentId}/result")
     public ResponseEntity<AssignmentResultDTO> createResult (@PathVariable Integer assignmentId,
                                                              @RequestParam Integer studentId, @RequestBody AssignmentResultDTO req){
         return ResponseEntity.ok(assignmentService.createAssignmentResult(assignmentId,studentId,req));
+    }
+
+    @GetMapping("/assignment/{assignmentId}/result/{resultId}")
+    public ResponseEntity<AssignmentResultDTO> findResultById (@PathVariable Integer assignmentId, @PathVariable Integer resultId){
+        return ResponseEntity.ok(assignmentService.findResultById(resultId));
+    }
+
+    @GetMapping("/assignment/{assignmentId}/result/student/{studentId}")
+    public ResponseEntity<List<AssignmentResultDTO>> findResultsByStudent (@PathVariable Integer assignmentId, @PathVariable Integer studentId){
+        return ResponseEntity.ok(assignmentService.findResultByStudentId(studentId));
+    }
+
+    @DeleteMapping("/assignment/{assignmentId}/result/{resultId}/delete")
+    public ResponseEntity<Void> deleteResult (@PathVariable Integer assignmentId, @PathVariable Integer resultId ){
+        assignmentService.deleteResult(resultId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

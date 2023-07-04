@@ -1,6 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.domain.entity;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -11,15 +12,14 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "assignment_results")
-public class AssignmentResult {
+@EntityListeners(AuditingEntityListener.class)
+public class AssignmentResult extends Auditable<String>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer grade;
     private String teachersNotes;
-    private Integer createdBy;
-    private Integer updatedBy;
 
     @ManyToOne
     @JoinColumn(name = "student_id",referencedColumnName = "id")

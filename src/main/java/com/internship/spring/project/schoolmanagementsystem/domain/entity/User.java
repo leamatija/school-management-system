@@ -2,13 +2,11 @@ package com.internship.spring.project.schoolmanagementsystem.domain.entity;
 
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@EntityListeners(AuditingEntityListener.class)
+
 @Entity
 @Getter
 @Setter
@@ -16,7 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
-public class User {
+@EntityListeners(AuditingEntityListener.class)
+public class User extends Auditable<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +29,6 @@ public class User {
     private String password;
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Integer createdBy;
-    private Integer updatedBy;
     private Boolean deleted=false;
 
     @ManyToMany

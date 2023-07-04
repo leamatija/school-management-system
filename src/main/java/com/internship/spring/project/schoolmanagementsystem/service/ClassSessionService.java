@@ -12,11 +12,10 @@ import java.util.List;
 public interface ClassSessionService {
 
     ClassSessionDTO createClassSession(ClassSessionDTO classSessionDTO);
-    ClassSessionDTO addTeacherToClassSession (Integer id, UserDTO userDTO);
     ClassSessionDTO updateClassSession (Integer id, ClassSessionDTO classSessionDTO);
-    Void deleteClassSession (Integer id);
+    void deleteClassSession (Integer id);
     List<ClassSessionDTO> getClassSessionsByClassroom(Integer classroomId);
-    List<ClassSession> findAllByTeacherAndStartTimeLikeAndFinishTimeLike(User teacher, List<LocalDateTime> startLocalDateTimes, List<LocalDateTime> finishLocalDateTime);
+    List<ClassSession> findAllByTeacherAndStartTimeInAndFinishTimeIn(User teacher, List<LocalDateTime> startLocalDateTimes, List<LocalDateTime> finishLocalDateTime);
     List<ClassSession> findAllByClassroomAndStartTimeInAndFinishTimeIn(Classroom classroom, List<LocalDateTime> startLocalDateTimes, List<LocalDateTime> finishLcalDateTime);
 
 

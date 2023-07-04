@@ -9,7 +9,8 @@ import java.util.stream.Collectors;
 
 public class DateUtils {
 
-    public static List<LocalDate> generateDates(LocalDate startDate, LocalDate endDate, List<Integer> onDayOfWeek, Optional<List<LocalDate>> holidays){
+    public static List<LocalDate> generateDates(LocalDate startDate, LocalDate endDate, List<Integer> onDayOfWeek,
+                                                Optional<List<LocalDate>> holidays){
 
         // Predicate 1: Is a given date is a holiday
         Predicate<LocalDate> isHoliday = date -> holidays.isPresent()
