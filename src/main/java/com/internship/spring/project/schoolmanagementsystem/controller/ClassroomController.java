@@ -1,8 +1,8 @@
 package com.internship.spring.project.schoolmanagementsystem.controller;
 
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomDTO;
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomSessionRequestDTO;
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomStudentsDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomSessionRequestDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomStudentsDTO;
 import com.internship.spring.project.schoolmanagementsystem.service.ClassroomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

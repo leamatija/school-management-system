@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.internship.spring.project.schoolmanagementsystem.domain.exception.ExceptionConstants.*;
+import static java.lang.String.format;
+
 @Service
 @RequiredArgsConstructor
 public class AssignmentServiceImpl implements AssignmentService {
@@ -30,9 +33,9 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public AssignmentDTO createAssignment(Integer sessionId, AssignmentDTO a) {
-        var session = classSessionRepository.findById(sessionId).orElseThrow(()-> new ResourceNotFoundException("Session not found"));
+        var session = classSessionRepository.findById(sessionId).orElseThrow(()-> new ResourceNotFoundException(format(CLASS_SESSION_NOT_FOUND,sessionId)));
         var filename = UUID.randomUUID().toString().concat(".pdf");
-        a.setName(a.getFile().getOriginalFilename() );
+        a.setName(a.getFile().getOriginalFilename());
         a.setFileName(filename);
         storageService.store(a.getFile(),filename);
         var assignmentToSave = AssignmentMapper.toEntity(a);
@@ -44,7 +47,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     public AssignmentDTO findById(Integer id) {
         return assignmentRepository.findById(id)
                 .map(AssignmentMapper::toDto)
-                .orElseThrow(()-> new ResourceNotFoundException("Assignment not found"));
+                .orElseThrow(()-> new ResourceNotFoundException(format(ASSIGNMENT_NOT_FOUND,id)));
     }
 
     @Override
@@ -59,13 +62,13 @@ public class AssignmentServiceImpl implements AssignmentService {
      assignmentRepository.findById(id).ifPresentOrElse(a-> {
            a.setDeleted(true);
            assignmentRepository.save(a);
-       },()-> new ResourceNotFoundException("Assignment not found") );
+       },()-> new ResourceNotFoundException(format(ASSIGNMENT_NOT_FOUND,id)));
     }
 
     @Override
     public AssignmentResultDTO createAssignmentResult(Integer assignmentId, Integer studentId, AssignmentResultDTO req) {
-        var assignment = assignmentRepository.findById(assignmentId).orElseThrow(()-> new ResourceNotFoundException("Assignment not found"));
-        var student = userRepository.findById(studentId).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+        var assignment = assignmentRepository.findById(assignmentId).orElseThrow(()-> new ResourceNotFoundException(format(ASSIGNMENT_NOT_FOUND,assignmentId)));
+        var student = userRepository.findById(studentId).orElseThrow(()-> new ResourceNotFoundException(format(USER_NOT_FOUND,studentId)));
         AssignmentResult result = new AssignmentResult();
         result.setAssignment(assignment);
         result.setStudent(student);
@@ -74,16 +77,18 @@ public class AssignmentServiceImpl implements AssignmentService {
         return AssignmentMapper.toResultDTO(assignmentResultRepository.save(result));
     }
 
+//TODO bej filter
+
     @Override
     public AssignmentResultDTO findResultById(Integer resultId) {
        return assignmentResultRepository.findById(resultId)
                .map(AssignmentMapper::toResultDTO)
-               .orElseThrow(()-> new ResourceNotFoundException("Result not found"));
+               .orElseThrow(()-> new ResourceNotFoundException(format(RESULT_NOT_FOUND,resultId)));
     }
 
     @Override
     public List<AssignmentResultDTO> findResultByStudentId(Integer studentId) {
-        User student = userRepository.findById(studentId).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+        User student = userRepository.findById(studentId).orElseThrow(()-> new ResourceNotFoundException(format(USER_NOT_FOUND,studentId)));
         return student.getAssignmentResults()
                 .stream().map(AssignmentMapper::toResultDTO)
                 .collect(Collectors.toList());
@@ -91,7 +96,11 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public void deleteResult(Integer id) {
-        assignmentRepository.deleteById(id);
+        assignmentRepository.findById(id).ifPresentOrElse(a->{
+                    a.setDeleted(true);
+                    assignmentRepository.save(a);},
+                ()-> new ResourceNotFoundException(format(ASSIGNMENT_NOT_FOUND,id)));
+
     }
 
 

@@ -25,7 +25,7 @@ public class PotentialAnswer {
     @JoinColumn(name = "question_id",referencedColumnName = "id")
     private ExamQuestion examQuestion;
 
-    @ManyToMany(mappedBy = "potentialAnswers")
+    @ManyToMany(mappedBy = "potentialAnswers",cascade = CascadeType.ALL)
     private List<ExamResult> examResults = new ArrayList<>();
 
 }

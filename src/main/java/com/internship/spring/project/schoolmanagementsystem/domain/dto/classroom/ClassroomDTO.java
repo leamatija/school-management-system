@@ -1,4 +1,4 @@
-package com.internship.spring.project.schoolmanagementsystem.domain.dto;
+package com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom;
 
 import lombok.*;
 
@@ -21,5 +21,5 @@ public class ClassroomDTO {
     @NotEmpty
     private String endDate;
     @NotEmpty
-    private Boolean active;
+    private boolean active;
 }

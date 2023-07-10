@@ -12,11 +12,10 @@ public class DateUtils {
     public static List<LocalDate> generateDates(LocalDate startDate, LocalDate endDate, List<Integer> onDayOfWeek,
                                                 Optional<List<LocalDate>> holidays){
 
-        // Predicate 1: Is a given date is a holiday
+
         Predicate<LocalDate> isHoliday = date -> holidays.isPresent()
                 && holidays.get().contains(date);
 
-        // Predicate 2: Is a given date is a weekday
         Predicate<LocalDate> isWeekend = date -> date.getDayOfWeek() == DayOfWeek.SATURDAY
                 || date.getDayOfWeek() == DayOfWeek.SUNDAY;
 

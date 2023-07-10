@@ -1,6 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.domain.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -13,7 +14,8 @@ import javax.persistence.*;
 @Builder
 @Table(name = "attentance")
 @EntityListeners(AuditingEntityListener.class)
-public class Attendance extends Auditable<String>{
+@Where(clause = "deleted = false")
+public class Attendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +23,7 @@ public class Attendance extends Auditable<String>{
     private Boolean status;
     private Integer participation;
     private String teachersNotes;
+    private boolean deleted = false;
 
     @ManyToOne
     @JoinColumn(name = "student_id",referencedColumnName = "id")

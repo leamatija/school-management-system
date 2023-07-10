@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "assignment_results")
 @EntityListeners(AuditingEntityListener.class)
-public class AssignmentResult extends Auditable<String>{
+public class AssignmentResult extends BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

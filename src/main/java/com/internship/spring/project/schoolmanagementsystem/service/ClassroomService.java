@@ -1,7 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.service;
 
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomDTO;
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomSessionRequestDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomSessionRequestDTO;
 
 import javax.validation.Valid;
 import java.util.List;

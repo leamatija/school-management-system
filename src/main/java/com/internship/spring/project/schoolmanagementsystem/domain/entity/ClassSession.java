@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,7 +16,8 @@ import java.util.List;
 @Entity
 @Table(name = "class_sessions")
 @EntityListeners(AuditingEntityListener.class)
-public class ClassSession extends Auditable<String>{
+//@Where(clause = "deleted = false")
+public class ClassSession extends BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,17 +25,17 @@ public class ClassSession extends Auditable<String>{
     private String topic;
     private LocalDateTime startTime;
     private LocalDateTime finishTime;
-    private Boolean cancelled;
-    private Boolean deleted;
+    private boolean cancelled=false;
+    private boolean deleted=false;
 
-    @OneToOne(mappedBy = "classSession")
+    @OneToOne(mappedBy = "classSession",cascade = CascadeType.ALL)
     private Exam exam;
 
-    @OneToMany(mappedBy = "classSession")
-    private List<Assignment> assignments;
+    @OneToMany(mappedBy = "classSession",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Assignment> assignments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "classSession")
-    private List<Attendance> attendances;
+    @OneToMany(mappedBy = "classSession",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Attendance> attendances = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "teacher_id",referencedColumnName = "id")

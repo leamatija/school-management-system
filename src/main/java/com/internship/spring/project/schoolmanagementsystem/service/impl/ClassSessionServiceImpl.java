@@ -1,5 +1,6 @@
 package com.internship.spring.project.schoolmanagementsystem.service.impl;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassSessionDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.TopicRequestDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.UserDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.ClassSession;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.Classroom;
@@ -15,6 +16,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.internship.spring.project.schoolmanagementsystem.domain.exception.ExceptionConstants.CLASSROOM_NOT_FOUND;
+import static com.internship.spring.project.schoolmanagementsystem.domain.exception.ExceptionConstants.CLASS_SESSION_NOT_FOUND;
+import static java.lang.String.format;
+
 @Service
 @RequiredArgsConstructor
 public class ClassSessionServiceImpl implements ClassSessionService {
@@ -22,17 +27,19 @@ public class ClassSessionServiceImpl implements ClassSessionService {
     private final ClassSessionRepository classSessionRepository;
 
     @Override
-    public ClassSessionDTO createClassSession(ClassSessionDTO classSessionDTO) {
-        return ClassSessionMapper.toDto(classSessionRepository.save(ClassSessionMapper.toEntity(classSessionDTO)));
+    public void addTopic(Integer sessionId, TopicRequestDTO topicReq) {
+        var session = classSessionRepository.findById(sessionId).orElseThrow(
+                ()-> new ResourceNotFoundException(format(CLASS_SESSION_NOT_FOUND,sessionId)));
+        session.setTopic(topicReq.getTopic());
+        classSessionRepository.save(session);
     }
 
     @Override
-    public ClassSessionDTO updateClassSession(Integer id, ClassSessionDTO classSessionDTO) {
-        return classSessionRepository.findById(id)
-                .map(classSession-> ClassSessionMapper.toEntity(classSession,classSessionDTO))
-                .map(classSessionRepository::save)
-                .map(ClassSessionMapper::toDto)
-                .orElseThrow(()-> new ResourceNotFoundException(String.format("Classroom with id %s not found",id)));
+    public void setCancellation(Integer sessionId, Boolean cancelled) {
+        var session = classSessionRepository.findById(sessionId).orElseThrow(
+                ()-> new ResourceNotFoundException(format(CLASS_SESSION_NOT_FOUND,sessionId)));
+        session.setCancelled(cancelled);
+        classSessionRepository.save(session);
     }
 
     @Override
@@ -40,7 +47,7 @@ public class ClassSessionServiceImpl implements ClassSessionService {
         classSessionRepository.findById(id).ifPresentOrElse(c->{
             c.setDeleted(true);
             classSessionRepository.save(c);
-        },()->new ResourceNotFoundException(String.format("Classroom with id %s not found",id)));
+        },()->new ResourceNotFoundException(format(CLASSROOM_NOT_FOUND,id)));
     }
 
     @Override

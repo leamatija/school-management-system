@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.internship.spring.project.schoolmanagementsystem.domain.exception.ExceptionConstants.ATTENDANCE_NOT_FOUND;
+import static com.internship.spring.project.schoolmanagementsystem.domain.exception.ExceptionConstants.CLASS_SUBJECT_NOT_FOUND;
+import static java.lang.String.format;
+
 @Service
 @RequiredArgsConstructor
 public class ClassSubjectServiceImpl implements ClassSubjectService {
@@ -27,7 +31,7 @@ public class ClassSubjectServiceImpl implements ClassSubjectService {
     public ClassSubjectDTO findById(Integer id) {
         return subjectRepository.findById(id)
                 .map(ClassSubjectMapper::toDto)
-                .orElseThrow(()-> new ResourceNotFoundException(String.format("Subject with id %s not found",id)));
+                .orElseThrow(()-> new ResourceNotFoundException(format(CLASS_SUBJECT_NOT_FOUND,id)));
     }
 
     @Override
@@ -39,6 +43,10 @@ public class ClassSubjectServiceImpl implements ClassSubjectService {
 
     @Override
     public void deleteSubject(Integer id) {
-        subjectRepository.deleteById(id);
+        subjectRepository.findById(id).ifPresentOrElse(a->{
+                    a.setDeleted(true);
+                    subjectRepository.save(a);},
+                ()-> new ResourceNotFoundException(format(CLASS_SUBJECT_NOT_FOUND,id)));
+
     }
 }

@@ -3,6 +3,7 @@ package com.internship.spring.project.schoolmanagementsystem.controller;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentResultDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassSessionDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.TopicRequestDTO;
 import com.internship.spring.project.schoolmanagementsystem.service.AssignmentService;
 import com.internship.spring.project.schoolmanagementsystem.service.ClassSessionService;
 import com.internship.spring.project.schoolmanagementsystem.service.impl.FileSystemStorageService;
@@ -22,16 +23,6 @@ public class ClassSessionController {
     private final ClassSessionService classSessionService;
     private final AssignmentService assignmentService;
 
-
-    @PostMapping
-    public ResponseEntity<ClassSessionDTO> createClassSession(@RequestBody ClassSessionDTO classSessionDTO){
-        return ResponseEntity.ok(classSessionService.createClassSession(classSessionDTO));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ClassSessionDTO> updateClassSession(@PathVariable Integer id, @RequestBody ClassSessionDTO classSessionDTO){
-        return ResponseEntity.ok(classSessionService.updateClassSession(id,classSessionDTO));
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClassSession (@PathVariable Integer id){
@@ -84,6 +75,18 @@ public class ClassSessionController {
     @DeleteMapping("/assignment/{assignmentId}/result/{resultId}/delete")
     public ResponseEntity<Void> deleteResult (@PathVariable Integer assignmentId, @PathVariable Integer resultId ){
         assignmentService.deleteResult(resultId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{sessionId}")
+    public ResponseEntity<Void> setCancellation (@PathVariable Integer sessionId, @RequestParam Boolean cancel){
+        classSessionService.setCancellation(sessionId,cancel);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/{sessionId}/topic")
+    public ResponseEntity<Void> addTopic (@PathVariable Integer sessionId, @RequestBody TopicRequestDTO topicReq){
+        classSessionService.addTopic(sessionId,topicReq);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

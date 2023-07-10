@@ -1,4 +1,4 @@
-package com.internship.spring.project.schoolmanagementsystem.domain.dto;
+package com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

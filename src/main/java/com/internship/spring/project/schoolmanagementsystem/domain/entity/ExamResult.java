@@ -15,18 +15,18 @@ import java.util.List;
 @Builder
 @Table(name = "exam_results")
 @EntityListeners(AuditingEntityListener.class)
-public class ExamResult extends Auditable<String>{
+public class ExamResult extends BaseEntity<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer score;
+    private Double score;
     private Boolean passed;
 
     @OneToOne(mappedBy = "examResult")
     private Attendance attendance;
 
     @ManyToMany
-    @JoinTable(joinColumns = @JoinColumn(name = "exam_result_id",referencedColumnName = "id"),
+    @JoinTable(name = "exam_answers",joinColumns = @JoinColumn(name = "exam_result_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "potential_answer_id",referencedColumnName = "id"))
     private List<PotentialAnswer> potentialAnswers = new ArrayList<>();
 }

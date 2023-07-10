@@ -1,15 +1,14 @@
 package com.internship.spring.project.schoolmanagementsystem.service.impl;
 
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomDTO;
 
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassroomSessionRequestDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomSessionRequestDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.ClassSession;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.Classroom;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.User;
 import com.internship.spring.project.schoolmanagementsystem.domain.exception.ConstraintException;
 import com.internship.spring.project.schoolmanagementsystem.domain.exception.ResourceNotFoundException;
 import com.internship.spring.project.schoolmanagementsystem.domain.mapper.ClassroomMapper;
-import com.internship.spring.project.schoolmanagementsystem.repository.ClassSessionRepository;
 import com.internship.spring.project.schoolmanagementsystem.repository.ClassSubjectRepository;
 import com.internship.spring.project.schoolmanagementsystem.repository.ClassroomRepository;
 import com.internship.spring.project.schoolmanagementsystem.repository.UserRepository;
@@ -28,6 +27,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.internship.spring.project.schoolmanagementsystem.domain.exception.ExceptionConstants.*;
+import static java.lang.String.format;
 
 @Validated
 @Service
@@ -50,16 +52,16 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .map(c-> ClassroomMapper.toEntity(c,classroomDTO))
                 .map(classroomRepository::save)
                 .map(ClassroomMapper::toDto)
-                .orElseThrow(()-> new ResourceNotFoundException(String.format("Classroom with id %s not found",id)));
+                .orElseThrow(()-> new ResourceNotFoundException(format(CLASSROOM_NOT_FOUND,id)));
     }
 
     @Override
     public void deleteClassroom(Integer id) {
         classroomRepository.findById(id)
                 .ifPresentOrElse(c->{
-                    c.setDeleted(!c.getDeleted());
+                    c.setDeleted(true);
                     classroomRepository.save(c);},
-                        ()-> new ResourceNotFoundException(String.format("Classroom with id %s not found",id)));
+                        ()-> new ResourceNotFoundException(format(CLASSROOM_NOT_FOUND,id)));
     }
 
     @Override
@@ -71,14 +73,14 @@ public class ClassroomServiceImpl implements ClassroomService {
     public ClassroomDTO getClassroomById(Integer id) {
         return classroomRepository.findById(id)
                 .map(ClassroomMapper::toDto)
-                .orElseThrow(()-> new ResourceNotFoundException(String.format("Classroom with id %s not found",id)));
+                .orElseThrow(()-> new ResourceNotFoundException(format(CLASSROOM_NOT_FOUND,id)));
     }
 
     @Override
     public void addStudentsToClassroom(Integer classroomId,List<Integer> studentsId) {
-    Classroom c = classroomRepository.findById(classroomId).orElseThrow(()-> new ResourceNotFoundException(String.format("Classroom with id %s not found",classroomId)));
+    Classroom c = classroomRepository.findById(classroomId).orElseThrow(()-> new ResourceNotFoundException(format(CLASSROOM_NOT_FOUND,classroomId)));
         if (studentsId.size()>c.getCapacity()){
-            throw new RuntimeException("Capacity exceeded");
+            throw new RuntimeException(CAPACITY_EXCEEDED);
         }else {
             List<User> students = userRepository.findAllById(studentsId);
             c.setStudents(students);
@@ -92,13 +94,13 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public void addClassSessionsToClass(Integer classroomId, @Valid ClassroomSessionRequestDTO req) {
         var classroom = classroomRepository.findById(classroomId)
-                .orElseThrow(()-> new ResourceNotFoundException(String.format("Classroom with id %s not found",classroomId)));
+                .orElseThrow(()-> new ResourceNotFoundException(format(CLASSROOM_NOT_FOUND,classroomId)));
 
         var teacher = userRepository.findById(req.getTeacherId())
-                .orElseThrow(()-> new ResourceNotFoundException(String.format("User with id %s not found",req.getTeacherId())));
+                .orElseThrow(()-> new ResourceNotFoundException(format(USER_NOT_FOUND,req.getTeacherId())));
 
         var sessionDates = DateUtils.generateDates(LocalDate.parse(req.getStartLocalDate()),LocalDate.parse(req.getEndLocalDate()),req.getWeekDays(), Optional.empty());
-        var subject = classSubjectRepository.findById(req.getSubjectId()).orElseThrow(()-> new ResourceNotFoundException(String.format("Subject with id %s not found",req.getSubjectId())));
+        var subject = classSubjectRepository.findById(req.getSubjectId()).orElseThrow(()-> new ResourceNotFoundException(format(CLASS_SUBJECT_NOT_FOUND,req.getSubjectId())));
 
         var generatedSessionsDate = sessionDates.stream()
                 .map(d-> Pair.of(d.atTime(LocalTime.parse(req.getStartTime())),d.atTime(LocalTime.parse(req.getEndTime()))))
@@ -111,10 +113,10 @@ public class ClassroomServiceImpl implements ClassroomService {
 
         var existingClassroomSessions = classSessionService.findAllByClassroomAndStartTimeInAndFinishTimeIn(classroom,startDates,endDates);
         if (existingSession.size()>0){
-            throw new ConstraintException(String.format("Can not add teacher to this booked session because teacher with id %s is already booked",req.getTeacherId()));
+            throw new ConstraintException(format(TEACHER_CONSTRAINT_EXCEPTION,req.getTeacherId()));
         }
         if (existingClassroomSessions.size()>0){
-            throw new ConstraintException(String.format("Classroom with id %s is booked, can not add sessions",classroomId));
+            throw new ConstraintException(format(CLASSROOM_CONSTRAINT_EXCEPTION,classroomId));
         }
         var generatedSessions = generatedSessionsDate.stream()
                 .map(pair-> {

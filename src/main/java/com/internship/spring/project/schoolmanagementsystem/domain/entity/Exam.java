@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @Table(name = "exams")
 @EntityListeners(AuditingEntityListener.class)
-public class Exam extends Auditable<String>{
+public class Exam extends BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Exam extends Auditable<String>{
     @JoinColumn(name = "session_id",referencedColumnName = "id")
     private ClassSession classSession;
 
-    @OneToMany(mappedBy = "exam")
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
     private List<ExamQuestion> examQuestions = new ArrayList<>();
 
 
