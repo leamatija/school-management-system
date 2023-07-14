@@ -9,7 +9,7 @@ public class AttendanceMapper {
         return AttendanceDTO.builder()
                 .id(a.getId())
                 .participation(a.getParticipation())
-                .status(a.getStatus())
+                .present(a.getPresent())
                 .teachersNotes(a.getTeachersNotes())
                 .studentName(a.getUser().getFirstName()+" " + a.getUser().getLastName())
                 .build();
@@ -18,14 +18,14 @@ public class AttendanceMapper {
     public static Attendance toEntity (AttendanceDTO a){
         return Attendance.builder()
                 .participation(a.getParticipation())
-                .status(a.getStatus())
+                .present(a.getPresent())
                 .teachersNotes(a.getTeachersNotes())
                 .build();
     }
 
     public static Attendance toUpdateEntity (Attendance attendance, AttendanceDTO attendanceDTO){
         attendance.setParticipation(attendanceDTO.getParticipation());
-        attendance.setStatus(attendanceDTO.getStatus());
+        attendance.setPresent(attendanceDTO.getPresent());
         attendance.setTeachersNotes(attendanceDTO.getTeachersNotes());
         return attendance;
     }

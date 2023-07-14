@@ -36,8 +36,7 @@ public class Classroom extends BaseEntity<Integer> {
             inverseJoinColumns = @JoinColumn(name = "student_id",referencedColumnName = "id"))
     private List<User> students = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "classroom_id",referencedColumnName = "id")
+    @OneToMany(mappedBy = "classroom",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ClassSession> classSessions = new ArrayList<>();
 
 

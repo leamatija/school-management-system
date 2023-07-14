@@ -1,5 +1,6 @@
 package com.internship.spring.project.schoolmanagementsystem.configuration;
 
+import com.github.javafaker.Faker;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.User;
 import com.internship.spring.project.schoolmanagementsystem.repository.UserRepository;
 import com.nimbusds.jose.jwk.JWKSet;

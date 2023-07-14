@@ -1,6 +1,10 @@
 package com.internship.spring.project.schoolmanagementsystem.service;
 
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.PageDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.UserDTO;
+import com.internship.spring.project.schoolmanagementsystem.repository.specification.SearchQuery;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -10,7 +14,6 @@ public interface UserService {
     UserDTO updateUser (UserDTO updateDTO, Integer id);
     Void deleteUser (Integer id);
     UserDTO findUserById (Integer id);
-    List<UserDTO> findUserByRole (String role);
-
-
+    Page<UserDTO> findUserByRole (String role, PageDTO pageDTO);
+    Page<UserDTO> filterUsers(List<SearchQuery> searchQueries, PageDTO pageDTO);
 }

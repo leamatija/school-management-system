@@ -1,19 +1,26 @@
 package com.internship.spring.project.schoolmanagementsystem.service.impl;
 
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.PageDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.UserDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.User;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.UserRole;
-import com.internship.spring.project.schoolmanagementsystem.domain.exception.ExceptionConstants;
 import com.internship.spring.project.schoolmanagementsystem.domain.exception.ResourceNotFoundException;
 import com.internship.spring.project.schoolmanagementsystem.domain.mapper.UserMapper;
 import com.internship.spring.project.schoolmanagementsystem.repository.UserRepository;
+import com.internship.spring.project.schoolmanagementsystem.repository.specification.SearchQuery;
+import com.internship.spring.project.schoolmanagementsystem.repository.specification.UserSpecification;
 import com.internship.spring.project.schoolmanagementsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,9 +68,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<UserDTO> findUserByRole(String role) {
-        return userRepository.findUserByRole(UserRole.fromValue(role)).stream()
-                .map(UserMapper::toDto).collect(Collectors.toList());
+    public Page<UserDTO> findUserByRole(String role, PageDTO pageDTO) {
+        Sort sort = Sort.by(pageDTO.getSortDirection(), pageDTO.getSortBy());
+        Pageable pageable = PageRequest.of(pageDTO.getPageNumber(),
+                pageDTO.getPageSize(),sort);
+        return userRepository.findUserByRole(UserRole.fromValue(role),pageable).map(UserMapper::toDto);
+    }
+
+    @Override
+    public Page<UserDTO> filterUsers(List<SearchQuery> searchQueries, PageDTO pageDTO) {
+        Sort sort = Sort.by(pageDTO.getSortDirection(), pageDTO.getSortBy());
+        Pageable pageable = PageRequest.of(pageDTO.getPageNumber(),
+                pageDTO.getPageSize(),sort);
+        if(searchQueries!=null && searchQueries.size()>0){
+            var userSpec = UserSpecification.toSpecification(searchQueries);
+            return userRepository.findAll(userSpec,pageable).map(UserMapper::toDto);
+        }else {
+            return userRepository.findAll(pageable).map(UserMapper::toDto);
+        }
     }
 
     @Override

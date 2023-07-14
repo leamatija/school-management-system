@@ -26,7 +26,7 @@ public class ExamController {
     }
 
     @PostMapping("/{sessionId}/submit")
-    public ResponseEntity<ExamResultDTO> submitExam(@RequestBody ExamSubmitDTO req){
+    public ResponseEntity<ExamResultDTO> submitExam(@PathVariable Integer sessionId, @RequestBody ExamSubmitDTO req){
         return ResponseEntity.ok(examService.evaluateExam(req.getAnswers()));
     }
 }

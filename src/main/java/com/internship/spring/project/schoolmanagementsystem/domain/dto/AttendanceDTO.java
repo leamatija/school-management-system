@@ -12,7 +12,7 @@ public class AttendanceDTO {
 
     private Integer id;
     @NotEmpty
-    private Boolean status;
+    private Boolean present;
     private Integer participation;
     private String teachersNotes;
     private String studentName;

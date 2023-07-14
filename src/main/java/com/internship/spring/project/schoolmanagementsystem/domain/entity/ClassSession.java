@@ -49,5 +49,8 @@ public class ClassSession extends BaseEntity<Integer> {
     @JoinColumn(name = "classroom_id",referencedColumnName = "id")
     private Classroom classroom;
 
+    @OneToMany(mappedBy = "session",cascade = CascadeType.ALL)
+    private List<ExamResult> examResults = new ArrayList<>();
+
 
 }

@@ -20,7 +20,7 @@ public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Boolean status;
+    private Boolean present;
     private Integer participation;
     private String teachersNotes;
     private boolean deleted = false;
@@ -33,8 +33,5 @@ public class Attendance {
     @JoinColumn(name = "session_id",referencedColumnName = "id")
     private ClassSession classSession;
 
-    @OneToOne
-    @JoinColumn(name = "exam_result_id",referencedColumnName = "id")
-    private ExamResult examResult;
 
 }

@@ -3,9 +3,8 @@ package com.internship.spring.project.schoolmanagementsystem.domain.dto;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.UserRole;
 import lombok.*;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,6 +21,7 @@ public class UserDTO {
     @Email(message = "Email is not valid")
     private String email;
     private String phoneNumber;
+    @Email(message = "PLease insert parent email")
     private String parentContact;
     @NotNull(message = "Password is required")
     private String password;

@@ -3,12 +3,14 @@ package com.internship.spring.project.schoolmanagementsystem.controller;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomSessionRequestDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomStudentsDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.TimetableDTO;
 import com.internship.spring.project.schoolmanagementsystem.service.ClassroomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -54,5 +56,10 @@ public class ClassroomController {
     public ResponseEntity<Void> addClassSessionToClassroom (@PathVariable Integer classroomId, @RequestBody ClassroomSessionRequestDTO req){
         classroomService.addClassSessionsToClass(classroomId,req);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/schedule")
+    public ResponseEntity<List<TimetableDTO>> getWeeklySchedule(@RequestParam String start, @RequestParam String finish){
+        return ResponseEntity.ok(classroomService.getWeeklyTimetable(LocalDateTime.parse(start),LocalDateTime.parse(finish)));
     }
 }

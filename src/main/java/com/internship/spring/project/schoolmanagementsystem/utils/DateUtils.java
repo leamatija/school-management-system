@@ -21,6 +21,7 @@ public class DateUtils {
 
         var generatedDates = onDayOfWeek.stream().map(d->{
             Predicate<LocalDate> isTargetWeekDay = date -> date.getDayOfWeek().equals(DayOfWeek.of(d));
+
            return startDate.datesUntil(endDate)
                     .filter(isWeekend.or(isHoliday).negate())
                     .filter(isTargetWeekDay)

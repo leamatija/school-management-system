@@ -1,8 +1,14 @@
 package com.internship.spring.project.schoolmanagementsystem.controller;
 
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.PageDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.UserDTO;
+import com.internship.spring.project.schoolmanagementsystem.repository.specification.SearchQuery;
 import com.internship.spring.project.schoolmanagementsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +43,14 @@ public class UserController {
     }
 
     @GetMapping("/list/{role}")
-    public ResponseEntity<List<UserDTO>> getUsersByRole(@PathVariable String role){
-        return ResponseEntity.ok(userService.findUserByRole(role));
+    public ResponseEntity<Page<UserDTO>> getUsersByRole(@PathVariable String role, PageDTO pageDTO){
+        return ResponseEntity.ok(userService.findUserByRole(role,pageDTO));
     }
+
+    @PostMapping("/list")
+    public ResponseEntity<Page<UserDTO>> filterUsers (@RequestBody List<SearchQuery> filters, PageDTO pageDTO) {
+        return ResponseEntity.ok(userService.filterUsers(filters,pageDTO));
+    }
+
 
 }

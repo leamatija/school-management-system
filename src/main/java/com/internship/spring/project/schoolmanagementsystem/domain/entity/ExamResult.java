@@ -22,8 +22,13 @@ public class ExamResult extends BaseEntity<Integer> {
     private Double score;
     private Boolean passed;
 
-    @OneToOne(mappedBy = "examResult")
-    private Attendance attendance;
+    @ManyToOne
+    @JoinColumn(name = "student_id",referencedColumnName = "id")
+    private User student;
+
+    @ManyToOne
+    @JoinColumn(name = "class_session_id",referencedColumnName = "id")
+    private ClassSession session;
 
     @ManyToMany
     @JoinTable(name = "exam_answers",joinColumns = @JoinColumn(name = "exam_result_id",referencedColumnName = "id"),

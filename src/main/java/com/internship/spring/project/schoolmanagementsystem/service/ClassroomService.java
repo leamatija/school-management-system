@@ -2,8 +2,10 @@ package com.internship.spring.project.schoolmanagementsystem.service;
 
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomSessionRequestDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.TimetableDTO;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ClassroomService {
@@ -14,4 +16,5 @@ public interface ClassroomService {
     ClassroomDTO getClassroomById(Integer id);
     void addStudentsToClassroom (Integer classroomId, List<Integer> studentsId);
     void addClassSessionsToClass (Integer classroomId, @Valid ClassroomSessionRequestDTO req);
+    List<TimetableDTO> getWeeklyTimetable(LocalDateTime start,LocalDateTime finish );
 }

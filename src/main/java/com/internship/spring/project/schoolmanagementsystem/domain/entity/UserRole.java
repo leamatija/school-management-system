@@ -8,7 +8,8 @@ import java.util.Arrays;
 public enum UserRole {
     PRINCIPAL("PRINCIPAL"),
     TEACHER("TEACHER"),
-    STUDENT("STUDENT");
+    STUDENT("STUDENT"),
+    SCHOOL_ADMIN("SCHOOL_ADMIN");
 
     private String value;
 

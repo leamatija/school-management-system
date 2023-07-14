@@ -17,28 +17,23 @@ public class SchoolManagementSchedulerService {
 
     private final ClassroomRepository classroomRepository;
 
-//    @Scheduled(cron = "0 0 0 1 9 ?")
-//    public void classroomDeactivation() {
-//        LocalDate currentDate = LocalDate.now();
-//        List<Classroom> classrooms = classroomRepository.findAllByStartDateBetween(currentDate.minusYears(1),currentDate)
-//                .stream().map(c-> {
-//                    c.setActive(false);
-//                    return c;
-//                }).collect(Collectors.toList());
-//        classroomRepository.saveAll(classrooms);
-//    }
-
-    @Scheduled(cron = "0 */2 * * * *")
+//    @Scheduled(fixedRate = 5000)
+    @Scheduled(cron = "0 0 0 1 9 ?")
     public void classroomDeactivation() {
         LocalDate currentDate = LocalDate.now();
         List<Classroom> classrooms = classroomRepository.findAllByStartDateBetween(currentDate.minusYears(1),currentDate)
-                .stream().map(c-> {
+                .stream()
+//                .peek(c-> System.err.println("deactivating " + c.getName()))
+                .map(c-> {
                     c.setActive(false);
                     return c;
                 }).collect(Collectors.toList());
-        log.info("working");
         classroomRepository.saveAll(classrooms);
     }
+
+    
+
+
 
 
 

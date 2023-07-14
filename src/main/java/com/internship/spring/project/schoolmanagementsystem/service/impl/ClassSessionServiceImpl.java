@@ -46,6 +46,7 @@ public class ClassSessionServiceImpl implements ClassSessionService {
     public void deleteClassSession(Integer id) {
         classSessionRepository.findById(id).ifPresentOrElse(c->{
             c.setDeleted(true);
+            c.setCancelled(true);
             classSessionRepository.save(c);
         },()->new ResourceNotFoundException(format(CLASSROOM_NOT_FOUND,id)));
     }

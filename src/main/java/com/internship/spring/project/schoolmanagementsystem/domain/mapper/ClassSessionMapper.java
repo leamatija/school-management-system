@@ -1,18 +1,22 @@
 package com.internship.spring.project.schoolmanagementsystem.domain.mapper;
 
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassSessionDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassSubjectDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.TopicRequestDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.ClassSession;
 
+import javax.security.auth.Subject;
 import java.time.LocalDateTime;
 
 public class ClassSessionMapper {
 
     public static ClassSessionDTO toDto (ClassSession cs){
         return ClassSessionDTO.builder()
+                .id(cs.getId())
                 .topic(cs.getTopic())
                 .startTime(cs.getStartTime().toString())
                 .finishTime(cs.getFinishTime().toString())
+                .subject(cs.getClassSubject().getSubject_name())
                 .build();
     }
 

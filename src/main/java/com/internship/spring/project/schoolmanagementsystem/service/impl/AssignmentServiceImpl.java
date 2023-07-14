@@ -77,7 +77,6 @@ public class AssignmentServiceImpl implements AssignmentService {
         return AssignmentMapper.toResultDTO(assignmentResultRepository.save(result));
     }
 
-//TODO bej filter
 
     @Override
     public AssignmentResultDTO findResultById(Integer resultId) {

@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/attendance")
-public class AttendanceOneController {
+public class AttendanceController {
 
     private final AttendanceService attendanceService;
 

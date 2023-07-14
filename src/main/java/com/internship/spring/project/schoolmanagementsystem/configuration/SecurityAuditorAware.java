@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
+
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 
@@ -14,14 +16,16 @@ public class SecurityAuditorAware implements AuditorAware<Integer> {
     public SecurityAuditorAware(UserRepository userRepository) {
     }
 
+
     @Override
     public Optional<Integer> getCurrentAuditor() {
 
-        Jwt principal = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-       principal.getClaims();
-        log.info("Sub = {}",principal.getClaims());
-        var sub = Integer.parseInt(principal.getClaim("sub"));
-        return Optional.of(sub);
+        Integer sub = null;
+        if (SecurityContextHolder.getContext().getAuthentication()!=null){
+            Jwt principal = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            sub = Integer.parseInt(principal.getClaim("sub"));
+        }
+        return sub==null? Optional.empty():Optional.of(sub);
     }
 
 }

@@ -16,4 +16,5 @@ public class ClassSessionDTO {
     private String topic;
     private String startTime;
     private String finishTime;
+    private String subject;
 }
