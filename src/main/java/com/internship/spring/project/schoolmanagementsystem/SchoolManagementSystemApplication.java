@@ -7,6 +7,7 @@ import com.internship.spring.project.schoolmanagementsystem.domain.entity.UserRo
 import com.internship.spring.project.schoolmanagementsystem.repository.ClassroomRepository;
 import com.internship.spring.project.schoolmanagementsystem.repository.UserRepository;
 import com.internship.spring.project.schoolmanagementsystem.service.EmailService;
+import com.internship.spring.project.schoolmanagementsystem.service.ReportsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -35,6 +36,9 @@ public class SchoolManagementSystemApplication implements CommandLineRunner {
 	private EmailService emailService;
 
 	@Autowired
+	ReportsService reportsService;
+
+	@Autowired
 	ClassroomRepository classroomRepository;
 
 
@@ -51,7 +55,11 @@ public class SchoolManagementSystemApplication implements CommandLineRunner {
 //				.mapToObj(p->buildUser(UserRole.STUDENT)).toList();
 //		userRepository.saveAll(teachers);
 //		userRepository.saveAll(students);
-//	}
+
+		var reports = userRepository.getStudentReports(12,LocalDateTime.parse("2023-09-11T00:00:00"),LocalDateTime.parse("2023-09-19T00:00:00"));
+		reportsService.getStudentReports(LocalDateTime.parse("2023-09-11T00:00:00"),LocalDateTime.parse("2023-09-19T00:00:00"));
+	}
+
 //	public User buildUser (UserRole role){
 //		Faker faker = new Faker();
 //		User u = new User();
@@ -66,10 +74,5 @@ public class SchoolManagementSystemApplication implements CommandLineRunner {
 //		return u;
 //	}
 
-	}
 
-	@EventListener(ApplicationReadyEvent.class)
-	public void sendMail(){
-		emailService.sendSimpleMailMessage("Email","irisixhengo@gmail.com","body");
-	}
 }

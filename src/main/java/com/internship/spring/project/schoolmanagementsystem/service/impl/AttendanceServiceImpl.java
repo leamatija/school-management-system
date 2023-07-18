@@ -8,6 +8,7 @@ import com.internship.spring.project.schoolmanagementsystem.repository.Attendanc
 import com.internship.spring.project.schoolmanagementsystem.repository.ClassSessionRepository;
 import com.internship.spring.project.schoolmanagementsystem.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final ClassSessionRepository classSessionRepository;
 
-
+    @PostAuthorize("@classSessionRepository.findFirstByIdAndTeacher_Id(#sessionId,authentication.name)!=null")
     @Override
     public List<AttendanceDTO> getAttendance(Integer sessionId) {
         List<Attendance> attendanceList;
@@ -44,6 +45,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         return attendanceList.stream().map(AttendanceMapper::toDto).collect(Collectors.toList());
     }
 
+    @PostAuthorize("@classSessionRepository.findFirstByIdAndTeacher_Id(#sessionId,authentication.name)!=null")
     @Override
     public List<AttendanceDTO> updateAttendance(Integer sessionId, List<AttendanceDTO> attendanceDTO) {
 

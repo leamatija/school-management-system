@@ -28,8 +28,6 @@ public class ClassSession extends BaseEntity<Integer> {
     private boolean cancelled=false;
     private boolean deleted=false;
 
-    @OneToOne(mappedBy = "classSession",cascade = CascadeType.ALL)
-    private Exam exam;
 
     @OneToMany(mappedBy = "classSession",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Assignment> assignments = new ArrayList<>();
@@ -49,8 +47,6 @@ public class ClassSession extends BaseEntity<Integer> {
     @JoinColumn(name = "classroom_id",referencedColumnName = "id")
     private Classroom classroom;
 
-    @OneToMany(mappedBy = "session",cascade = CascadeType.ALL)
-    private List<ExamResult> examResults = new ArrayList<>();
 
 
 }

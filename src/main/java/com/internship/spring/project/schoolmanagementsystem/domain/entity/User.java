@@ -51,9 +51,6 @@ public class User extends BaseEntity<Integer> implements UserDetails {
     @OneToMany(mappedBy = "student",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AssignmentResult> assignmentResults = new ArrayList<>();
 
-    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL)
-    private List<ExamResult> examResults = new ArrayList<>();
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

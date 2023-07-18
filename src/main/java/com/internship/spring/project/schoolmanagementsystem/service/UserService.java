@@ -1,11 +1,13 @@
 package com.internship.spring.project.schoolmanagementsystem.service;
 
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.PageDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.StudentReport;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.UserDTO;
 import com.internship.spring.project.schoolmanagementsystem.repository.specification.SearchQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface UserService {

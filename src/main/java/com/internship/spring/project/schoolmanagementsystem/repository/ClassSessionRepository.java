@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ClassSessionRepository extends JpaRepository<ClassSession,Integer> {
+    ClassSession findFirstByIdAndTeacher_Id(Integer sessionId,Integer teacherId);
     List<ClassSession> findByClassroomId (Integer classroom_id);
     List<ClassSession> findAllByTeacherAndStartTimeInAndFinishTimeIn(User teacher, List<LocalDateTime> startLocalDateTimes, List<LocalDateTime> finishLcalDateTime);
     List<ClassSession> findAllByClassroomAndStartTimeInAndFinishTimeIn(Classroom classroom,List<LocalDateTime> startLocalDateTimes, List<LocalDateTime> finishLcalDateTime);

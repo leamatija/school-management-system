@@ -72,5 +72,10 @@ public class TokenService {
 
 
     }
+
+    public static Integer getLoggedUser(){
+        Jwt principal = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return Integer.parseInt(principal.getClaim("sub"));
+    }
 }
 

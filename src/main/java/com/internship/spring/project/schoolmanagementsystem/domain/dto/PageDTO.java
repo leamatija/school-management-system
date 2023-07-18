@@ -8,7 +8,7 @@ import org.springframework.data.domain.Sort;
 @Setter
 public class PageDTO {
 
-    private int pageNumber = 0;
+    private int pageNumber;
     private int pageSize = 10;
     private Sort.Direction sortDirection = Sort.Direction.ASC;
     private String sortBy= "firstName";

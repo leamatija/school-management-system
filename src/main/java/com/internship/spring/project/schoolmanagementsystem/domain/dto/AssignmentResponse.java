@@ -1,10 +1,6 @@
 package com.internship.spring.project.schoolmanagementsystem.domain.dto;
 
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -12,11 +8,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AssignmentDTO {
+public class AssignmentResponse {
     private Integer id;
-    @NotEmpty
     private String name;
     private String fileName;
     private String  expirationDate;
-    private MultipartFile file;
+    private String path;
 }

@@ -1,6 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.service.impl;
 
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentRequest;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentResponse;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentResultDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.AssignmentResult;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.User;
@@ -12,6 +13,8 @@ import com.internship.spring.project.schoolmanagementsystem.repository.ClassSess
 import com.internship.spring.project.schoolmanagementsystem.repository.UserRepository;
 import com.internship.spring.project.schoolmanagementsystem.service.AssignmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,33 +28,39 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class AssignmentServiceImpl implements AssignmentService {
 
+    @Value("${base.host}")
+    private String baseHost;
+
     private final AssignmentRepository assignmentRepository;
     private final FileSystemStorageService storageService;
     private final ClassSessionRepository classSessionRepository;
     private final AssignmentResultRepository assignmentResultRepository;
     private final UserRepository userRepository;
 
+    @PostAuthorize("@classSessionRepository.findFirstByIdAndTeacher_Id(#sessionId,authentication.name)!=null")
     @Override
-    public AssignmentDTO createAssignment(Integer sessionId, AssignmentDTO a) {
+    public AssignmentResponse createAssignment(Integer sessionId, AssignmentRequest a) {
         var session = classSessionRepository.findById(sessionId).orElseThrow(()-> new ResourceNotFoundException(format(CLASS_SESSION_NOT_FOUND,sessionId)));
         var filename = UUID.randomUUID().toString().concat(".pdf");
-        a.setName(a.getFile().getOriginalFilename());
+        a.setName(a.getName());
         a.setFileName(filename);
         storageService.store(a.getFile(),filename);
         var assignmentToSave = AssignmentMapper.toEntity(a);
         assignmentToSave.setClassSession(session);
-        return AssignmentMapper.toDto(assignmentRepository.save(assignmentToSave));
+        var result = AssignmentMapper.toDto(assignmentRepository.save(assignmentToSave));
+        result.setPath(baseHost+result.getFileName());
+        return result;
     }
 
     @Override
-    public AssignmentDTO findById(Integer id) {
+    public AssignmentResponse findById(Integer id) {
         return assignmentRepository.findById(id)
                 .map(AssignmentMapper::toDto)
                 .orElseThrow(()-> new ResourceNotFoundException(format(ASSIGNMENT_NOT_FOUND,id)));
     }
 
     @Override
-    public List<AssignmentDTO> findAll() {
+    public List<AssignmentResponse> findAll() {
         return assignmentRepository.findAll().stream()
                 .map(AssignmentMapper::toDto)
                 .collect(Collectors.toList());

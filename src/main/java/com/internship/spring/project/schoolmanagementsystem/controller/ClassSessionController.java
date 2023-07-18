@@ -1,19 +1,14 @@
 package com.internship.spring.project.schoolmanagementsystem.controller;
 
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentDTO;
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentResultDTO;
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.ClassSessionDTO;
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.TopicRequestDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.*;
 import com.internship.spring.project.schoolmanagementsystem.service.AssignmentService;
 import com.internship.spring.project.schoolmanagementsystem.service.ClassSessionService;
-import com.internship.spring.project.schoolmanagementsystem.service.impl.FileSystemStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,17 +31,17 @@ public class ClassSessionController {
     }
 
     @PostMapping("/{classSessionId}/assignment")
-    public ResponseEntity<AssignmentDTO> createAssignment (@PathVariable Integer classSessionId, @ModelAttribute AssignmentDTO req ){
+    public ResponseEntity<AssignmentResponse> createAssignment (@PathVariable Integer classSessionId, @ModelAttribute AssignmentRequest req ){
         return ResponseEntity.ok(assignmentService.createAssignment(classSessionId,req));
     }
 
-    @GetMapping("/{classSessionId}/assignment/{assignmentId}")
-    public ResponseEntity<AssignmentDTO> findAssignmentById (@PathVariable Integer classSessionId,@PathVariable Integer assignmentId){
+    @GetMapping("/assignment/{assignmentId}")
+    public ResponseEntity<AssignmentResponse> findAssignmentById (@PathVariable Integer assignmentId){
         return ResponseEntity.ok(assignmentService.findById(assignmentId));
     }
 
     @GetMapping("/assignment/list")
-    public ResponseEntity<List<AssignmentDTO>> findAllAssignments (){
+    public ResponseEntity<List<AssignmentResponse>> findAllAssignments (){
         return ResponseEntity.ok(assignmentService.findAll());
     }
 

@@ -1,6 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.domain.mapper;
 
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentDTO;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentRequest;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentResponse;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentResultDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.Assignment;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.AssignmentResult;
@@ -9,8 +10,8 @@ import java.time.LocalDate;
 
 public class AssignmentMapper {
 
-    public static AssignmentDTO toDto (Assignment a){
-        return AssignmentDTO.builder()
+    public static AssignmentResponse toDto (Assignment a){
+        return AssignmentResponse.builder()
                 .id(a.getId())
                 .expirationDate(a.getExpirationDate().toString())
                 .fileName(a.getFileName())
@@ -18,7 +19,7 @@ public class AssignmentMapper {
                 .build();
     }
 
-    public static Assignment toEntity (AssignmentDTO a){
+    public static Assignment toEntity (AssignmentRequest a){
         return Assignment.builder()
                 .id(a.getId())
                 .expirationDate(LocalDate.parse(a.getExpirationDate()))
