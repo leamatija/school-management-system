@@ -44,7 +44,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final UserRepository userRepository;
     private final ClassSubjectRepository classSubjectRepository;
     private final ClassSessionService classSessionService;
-    private final ClassSessionRepository classSessionRepository;
+
 
     @Override
     public ClassroomDTO createClassroom(ClassroomDTO classroomDTO) {

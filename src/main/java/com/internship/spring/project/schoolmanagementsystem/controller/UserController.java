@@ -21,11 +21,6 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO, @RequestParam String role){
-        return ResponseEntity.ok(userService.createUser(userDTO,role));
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Integer id, @RequestBody UserDTO userDTO){
         return ResponseEntity.ok(userService.updateUser(userDTO,id));

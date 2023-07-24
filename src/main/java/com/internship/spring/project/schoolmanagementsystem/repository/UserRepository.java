@@ -1,4 +1,5 @@
 package com.internship.spring.project.schoolmanagementsystem.repository;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AbsenceReports;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.StudentReport;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.User;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.UserRole;
@@ -30,4 +31,12 @@ public interface UserRepository extends JpaRepository<User,Integer> , JpaSpecifi
             "where u.id = ? and ses.start_time between ? and ?")
     List<StudentReport> getStudentReports(Integer studentId, LocalDateTime from, LocalDateTime to);
 
+
+    @Query(nativeQuery = true, value = "select count(att.present)as Absences,u.id, concat(u.first_name,' ',u.last_name) as Student, c.name as Classroom from attentance att" +
+            "inner join users u on att.student_id = u.id" +
+            "inner join enrollment e on u.id = e.student_id" +
+            "inner join classrooms c on c.id = e.classroom_id" +
+            "where present = true" +
+            "group by c.name ,u.id")
+    List<AbsenceReports> getAbsencesForEveryStudent();
 }

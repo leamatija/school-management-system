@@ -43,7 +43,6 @@ public class SchoolManagementSchedulerService {
         LocalDateTime currentDate = LocalDateTime.now();
         reportsService.getStudentReports(currentDate.minusMonths(1),currentDate);
          System.err.println("reports sent");
-
     }
     
 

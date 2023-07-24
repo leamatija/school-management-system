@@ -56,8 +56,8 @@ public class SchoolManagementSystemApplication implements CommandLineRunner {
 //		userRepository.saveAll(teachers);
 //		userRepository.saveAll(students);
 
-		var reports = userRepository.getStudentReports(12,LocalDateTime.parse("2023-09-11T00:00:00"),LocalDateTime.parse("2023-09-19T00:00:00"));
-		reportsService.getStudentReports(LocalDateTime.parse("2023-09-11T00:00:00"),LocalDateTime.parse("2023-09-19T00:00:00"));
+//		var reports = userRepository.getStudentReports(12,LocalDateTime.parse("2023-09-11T00:00:00"),LocalDateTime.parse("2023-09-19T00:00:00"));
+//		reportsService.getStudentReports(LocalDateTime.parse("2023-09-11T00:00:00"),LocalDateTime.parse("2023-09-19T00:00:00"));
 	}
 
 //	public User buildUser (UserRole role){

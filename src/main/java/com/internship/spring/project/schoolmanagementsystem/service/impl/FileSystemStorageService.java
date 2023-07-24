@@ -41,7 +41,6 @@ public class FileSystemStorageService implements StorageService {
 					Paths.get(fileName))
 					.normalize().toAbsolutePath();
 			if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
-				// This is a security check
 				throw new StorageException(
 						"Cannot store file outside current directory.");
 			}
@@ -97,13 +96,4 @@ public class FileSystemStorageService implements StorageService {
 		FileSystemUtils.deleteRecursively(rootLocation.toFile());
 	}
 
-	@Override
-	public void init() {
-//		try {
-//			Files.createDirectories(rootLocation);
-//		}
-//		catch (IOException e) {
-//			throw new StorageException("Could not initialize storage", e);
-//		}
-	}
 }
