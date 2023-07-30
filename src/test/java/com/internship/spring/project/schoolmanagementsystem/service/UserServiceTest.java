@@ -1,6 +1,5 @@
 package com.internship.spring.project.schoolmanagementsystem.service;
 
-import com.internship.spring.project.schoolmanagementsystem.BaseTest;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.UserDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.User;
 import com.internship.spring.project.schoolmanagementsystem.domain.exception.ResourceNotFoundException;
@@ -17,7 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class UserServiceTest extends BaseTest {
+public class UserServiceTest {
     @Autowired
     private UserService toTest;
 

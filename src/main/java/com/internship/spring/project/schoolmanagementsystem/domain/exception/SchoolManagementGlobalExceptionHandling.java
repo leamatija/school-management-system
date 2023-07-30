@@ -36,6 +36,7 @@ public class SchoolManagementGlobalExceptionHandling extends ResponseEntityExcep
         ExceptionResponse resp = new ExceptionResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), Date.from(Instant.now()));
         return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
     }
+
     private Map<String,String> getRequiredFields(MethodArgumentNotValidException ex){
         Map<String,String> errors= new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(e ->{errors.put(e.getField(),e.getDefaultMessage());});

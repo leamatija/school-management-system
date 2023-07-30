@@ -62,13 +62,13 @@ public class ClassSessionController {
         return ResponseEntity.ok(assignmentService.findResultById(resultId));
     }
 
-    @GetMapping("/assignment/{assignmentId}/result/student/{studentId}")
-    public ResponseEntity<List<AssignmentResultDTO>> findResultsByStudent (@PathVariable Integer assignmentId, @PathVariable Integer studentId){
+    @GetMapping("/assignment/result/student/{studentId}")
+    public ResponseEntity<List<AssignmentResultDTO>> findResultsByStudent (@PathVariable Integer studentId){
         return ResponseEntity.ok(assignmentService.findResultByStudentId(studentId));
     }
 
-    @DeleteMapping("/assignment/{assignmentId}/result/{resultId}/delete")
-    public ResponseEntity<Void> deleteResult (@PathVariable Integer assignmentId, @PathVariable Integer resultId ){
+    @DeleteMapping("/assignment/result/{resultId}/delete")
+    public ResponseEntity<Void> deleteResult (@PathVariable Integer resultId ){
         assignmentService.deleteResult(resultId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -79,7 +79,7 @@ public class ClassSessionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/{sessionId}/topic")
+    @PutMapping("/{sessionId}/topic")
     public ResponseEntity<Void> addTopic (@PathVariable Integer sessionId, @RequestBody TopicRequestDTO topicReq){
         classSessionService.addTopic(sessionId,topicReq);
         return new ResponseEntity<>(HttpStatus.OK);

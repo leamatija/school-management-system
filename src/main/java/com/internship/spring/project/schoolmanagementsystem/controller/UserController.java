@@ -38,12 +38,12 @@ public class UserController {
     }
 
     @GetMapping("/list/{role}")
-    public ResponseEntity<Page<UserDTO>> getUsersByRole(@PathVariable String role, PageDTO pageDTO){
+    public ResponseEntity<Page<UserDTO>> getUsersByRole(@PathVariable String role, @ModelAttribute PageDTO pageDTO){
         return ResponseEntity.ok(userService.findUserByRole(role,pageDTO));
     }
 
     @PostMapping("/list")
-    public ResponseEntity<Page<UserDTO>> filterUsers (@RequestBody List<SearchQuery> filters, PageDTO pageDTO) {
+    public ResponseEntity<Page<UserDTO>> filterUsers (@RequestBody List<SearchQuery> filters, @ModelAttribute PageDTO pageDTO) {
         return ResponseEntity.ok(userService.filterUsers(filters,pageDTO));
     }
 

@@ -1,5 +1,6 @@
 package com.internship.spring.project.schoolmanagementsystem.service.impl;
 
+import com.internship.spring.project.schoolmanagementsystem.configuration.TokenService;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomDTO;
 
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.classroom.ClassroomSessionRequestDTO;
@@ -142,5 +143,19 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public List<TimetableDTO> getWeeklyTimetable(LocalDateTime start,LocalDateTime finish ) {
         return classroomRepository.getWeeklyTimetable(start,finish);
+    }
+
+    @Override
+    public List<TimetableDTO> getTeachersWeeklyTimetable(LocalDateTime start, LocalDateTime finish) {
+        Integer currentTeacherId = TokenService.getLoggedUser();
+        return classroomRepository.getTeachersWeeklyTimetable(currentTeacherId,start,finish);
+    }
+
+    @Override
+    public void removeStudentFromClassroom(Integer classroomId, Integer studentId) {
+        Classroom c = classroomRepository.findById(classroomId).orElseThrow(()-> new ResourceNotFoundException(format(CLASSROOM_NOT_FOUND,classroomId)));
+        List<User> students = c.getStudents().stream().filter(s-> s.getId()!= studentId).collect(Collectors.toList());
+        c.setStudents(students);
+        classroomRepository.save(c);
     }
 }

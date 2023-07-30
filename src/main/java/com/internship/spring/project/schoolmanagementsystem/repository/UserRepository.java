@@ -1,5 +1,6 @@
 package com.internship.spring.project.schoolmanagementsystem.repository;
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.AbsenceReports;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AbsenceReport;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AverageReport;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.StudentReport;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.User;
 import com.internship.spring.project.schoolmanagementsystem.domain.entity.UserRole;
@@ -32,11 +33,21 @@ public interface UserRepository extends JpaRepository<User,Integer> , JpaSpecifi
     List<StudentReport> getStudentReports(Integer studentId, LocalDateTime from, LocalDateTime to);
 
 
-    @Query(nativeQuery = true, value = "select count(att.present)as Absences,u.id, concat(u.first_name,' ',u.last_name) as Student, c.name as Classroom from attentance att" +
-            "inner join users u on att.student_id = u.id" +
-            "inner join enrollment e on u.id = e.student_id" +
-            "inner join classrooms c on c.id = e.classroom_id" +
-            "where present = true" +
-            "group by c.name ,u.id")
-    List<AbsenceReports> getAbsencesForEveryStudent();
+    @Query(nativeQuery = true, value = "select count(att.present)as absences,u.id, concat(u.first_name,' ',u.last_name) as student, c.name as classroom from attentance att " +
+            "inner join users u on att.student_id = u.id " +
+            "inner join enrollment e on u.id = e.student_id " +
+            "inner join classrooms c on c.id = e.classroom_id " +
+            "where present = true " +
+            "group by c.name ,u.id ")
+    List<AbsenceReport> getAbsencesForEveryStudent();
+
+
+    @Query(nativeQuery = true, value = "select round(avg(att.participation),2)as participation,round(avg(ar.grade),2) as homeworks,u.id,concat(u.first_name,' ',u.last_name) as student, c.name as classroom " +
+            "from attentance att " +
+            "inner join users u on u.id = att.student_id " +
+            "left join assignment_results ar on u.id = ar.student_id " +
+            "inner join class_sessions cs on cs.id = att.session_id " +
+            "inner join classrooms c on c.id = cs.classroom_id " +
+            "group by u.id, c.name,ar.grade")
+    List<AverageReport> getAverageForEveryStudent();
 }

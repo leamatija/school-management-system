@@ -13,8 +13,6 @@ public class UserSpecification extends GenericSpecification<User> {
         this.searchQuery = searchQuery;
     }
 
-    public UserSpecification() {
-    }
 
     @Override
     public SearchQuery getSearchCriteria() {
@@ -22,8 +20,8 @@ public class UserSpecification extends GenericSpecification<User> {
     }
 
     public static Specification<User> toSpecification(List<SearchQuery> filters){
-        final Specification<User> spec = new UserSpecification();
-        filters.stream().forEach(f-> spec.or(new UserSpecification(f)));
+        final Specification<User> spec = new UserSpecification(filters.get(0));
+        filters.stream().skip(1).forEach(f-> spec.or(new UserSpecification(f)));
         return spec;
     }
 

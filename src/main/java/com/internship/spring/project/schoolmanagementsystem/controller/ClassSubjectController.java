@@ -32,7 +32,7 @@ public class ClassSubjectController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSession(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteSubject(@PathVariable Integer id){
         classSubjectService.deleteSubject(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

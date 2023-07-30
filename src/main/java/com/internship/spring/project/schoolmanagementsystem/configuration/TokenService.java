@@ -57,7 +57,7 @@ public class TokenService {
 
     public String generateToken (Authentication authentication, Instant expireAt){
         User user = (User) authentication.getPrincipal();
-        String scope = authentication.getAuthorities().stream()
+        String roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
         JwtClaimsSet tokenClaims = JwtClaimsSet.builder()
@@ -65,7 +65,7 @@ public class TokenService {
                 .issuedAt(Instant.now())
                 .expiresAt(expireAt)
                 .subject(user.getId().toString())
-                .claim("roles", scope)
+                .claim("roles", roles)
                 .build();
         var token =this.encoder.encode(JwtEncoderParameters.from(tokenClaims)).getTokenValue();
         return token;
@@ -74,8 +74,11 @@ public class TokenService {
     }
 
     public static Integer getLoggedUser(){
-        Jwt principal = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return Integer.parseInt(principal.getClaim("sub"));
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof Jwt){
+            Jwt principal = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return Integer.parseInt(principal.getClaim("sub"));
+        }
+        return null;
     }
 }
 

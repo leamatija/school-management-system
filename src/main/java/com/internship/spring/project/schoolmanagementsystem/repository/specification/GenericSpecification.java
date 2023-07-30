@@ -23,10 +23,10 @@ public abstract class GenericSpecification<T extends BaseEntity> implements Spec
         {
             if (getSearchCriteria().getOperation().equalsIgnoreCase(">")) {
                 return criteriaBuilder.greaterThanOrEqualTo(
-                        root.<String>get(getSearchCriteria().getKey()), getSearchCriteria().getValue().toString());
+                        root.get(getSearchCriteria().getKey()), getSearchCriteria().getValue().toString());
             } else if (getSearchCriteria().getOperation().equalsIgnoreCase("<")) {
                 return criteriaBuilder.lessThanOrEqualTo(
-                        root.<String>get(getSearchCriteria().getKey()), getSearchCriteria().getValue().toString());
+                        root.get(getSearchCriteria().getKey()), getSearchCriteria().getValue().toString());
             } else if (getSearchCriteria().getOperation().equalsIgnoreCase(":")) {
                 if (root.get(getSearchCriteria().getKey()).getJavaType() == String.class) {
                     return criteriaBuilder.like(

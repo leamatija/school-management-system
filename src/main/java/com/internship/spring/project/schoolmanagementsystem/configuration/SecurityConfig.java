@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,6 +32,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -74,8 +77,20 @@ public class SecurityConfig {
                         .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
         );
         http.authorizeRequests()
-                .antMatchers("/api/auth/**")
-                .permitAll()
+                .antMatchers("/api/auth/login").permitAll()
+                .antMatchers("/api/auth/token").permitAll()
+                .antMatchers("/api/auth/forgot").permitAll()
+                .antMatchers("/api/auth/register").hasAuthority("ROLE_SCHOOL_ADMIN")
+                .regexMatchers("/api/users/[0-9]+").hasAnyAuthority("ROLE_SCHOOL_ADMIN","ROLE_PRINCIPAL")
+                .regexMatchers("/api/users/list/[A-Za-z]+").hasAnyAuthority("ROLE_PRINCIPAL","ROLE_SCHOOL_ADMIN")
+                .antMatchers(HttpMethod.DELETE).hasAuthority("ROLE_SCHOOL_ADMIN")
+                .antMatchers(HttpMethod.POST,"/api/classroom/**").hasAnyAuthority("ROLE_SCHOOL_ADMIN","ROLE_PRINCIPAL")
+                .antMatchers(HttpMethod.PUT,"/api/classroom/**").hasAnyAuthority("ROLE_SCHOOL_ADMIN","ROLE_PRINCIPAL")
+                .antMatchers(HttpMethod.POST,"/api/classSessions/**").hasAnyAuthority("ROLE_TEACHER","ROLE_PRINCIPAL")
+                .antMatchers(HttpMethod.PUT,"/api/classSessions/**").hasAnyAuthority("ROLE_TEACHER","ROLE_PRINCIPAL")
+                .antMatchers("/api/subject/**").hasAnyAuthority("ROLE_SCHOOL_ADMIN","ROLE_PRINCIPAL")
+                .antMatchers("/api/attendance/**").hasAnyAuthority("ROLE_TEACHER","ROLE_PRINCIPAL")
+                .antMatchers("/api/reports").hasAnyAuthority("ROLE_TEACHER","ROLE_PRINCIPAL","ROLE_SCHOOL_ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -123,15 +138,16 @@ public class SecurityConfig {
         return new CorsFilter(source);
     }
 
+
+    @Bean
+    public AuditorAware<Integer> auditorAware() {
+        return new SecurityAuditorAware();
+    }
+
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public AuditorAware<Integer> auditorAware() {
-        return new SecurityAuditorAware(userRepository);
     }
 
 }

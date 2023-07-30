@@ -1,7 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.service.impl;
 
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.AbsenceReports;
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.StudentReport;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AbsenceReport;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AverageReport;
 import com.internship.spring.project.schoolmanagementsystem.repository.ClassroomRepository;
 import com.internship.spring.project.schoolmanagementsystem.repository.UserRepository;
 import com.internship.spring.project.schoolmanagementsystem.service.EmailService;
@@ -73,8 +73,13 @@ public class ReportsServiceImpl implements ReportsService {
     }
 
     @Override
-    public List<AbsenceReports> getAbsencesForEveryStudent(){
+    public List<AbsenceReport> getAbsencesForEveryStudent(){
         return userRepository.getAbsencesForEveryStudent();
+    }
+
+    @Override
+    public List<AverageReport> getAverageForEveryStudent() {
+        return userRepository.getAverageForEveryStudent();
     }
 
 

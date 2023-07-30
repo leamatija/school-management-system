@@ -18,5 +18,10 @@ public interface ClassroomRepository extends JpaRepository<Classroom,Integer> {
             "inner join class_sessions cs on cr.id = cs.classroom_id inner join class_subjects csub on cs.subject_id = csub.id inner join users u on cs.teacher_id = u.id " +
             "where start_time between ? and ? ")
     List<TimetableDTO> getWeeklyTimetable(LocalDateTime start, LocalDateTime finish);
+
+    @Query(nativeQuery = true, value = "select cr.name as classroom,csub.subject_name as subject, concat(u.first_name,' ',u.last_name  ) as teacher,cs.start_time as startTime, cs.finish_time as finishTime from  classrooms cr " +
+            "inner join class_sessions cs on cr.id = cs.classroom_id inner join class_subjects csub on cs.subject_id = csub.id inner join users u on cs.teacher_id = u.id " +
+            "where u.id = ? and start_time between ? and ?")
+    List<TimetableDTO> getTeachersWeeklyTimetable( Integer teacherId,LocalDateTime start, LocalDateTime finish );
 }
 

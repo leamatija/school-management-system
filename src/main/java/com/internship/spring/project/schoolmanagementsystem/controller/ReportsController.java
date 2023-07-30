@@ -1,6 +1,7 @@
 package com.internship.spring.project.schoolmanagementsystem.controller;
 
-import com.internship.spring.project.schoolmanagementsystem.domain.dto.AbsenceReports;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AbsenceReport;
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.AverageReport;
 import com.internship.spring.project.schoolmanagementsystem.service.ReportsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,13 @@ public class ReportsController {
     private final ReportsService reportsService;
 
     @GetMapping
-    public ResponseEntity <List<AbsenceReports>> getAbsenceReportsForEveryStudent(){
+    public ResponseEntity <List<AbsenceReport>> getAbsenceReportsForEveryStudent(){
         return ResponseEntity.ok(reportsService.getAbsencesForEveryStudent());
+    }
+
+    @GetMapping("/average")
+    public ResponseEntity<List<AverageReport>> getAverageForEveryStudent(){
+        return ResponseEntity.ok(reportsService.getAverageForEveryStudent());
     }
 
 

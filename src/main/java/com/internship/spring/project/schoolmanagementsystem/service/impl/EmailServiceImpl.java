@@ -27,10 +27,10 @@ public class EmailServiceImpl implements EmailService {
     private String fromEmail;
 
     @Override
-    public void sendSimpleMailMessage( String to, String message) {
+    public void sendSimpleMailMessage( String to,String subject, String message) {
         try {
             SimpleMailMessage email = new SimpleMailMessage();
-            email.setSubject("School notifications");
+            email.setSubject(subject);
             email.setFrom(fromEmail);
             email.setTo(to);
             email.setText(message);

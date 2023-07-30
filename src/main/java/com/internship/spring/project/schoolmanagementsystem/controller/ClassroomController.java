@@ -62,4 +62,16 @@ public class ClassroomController {
     public ResponseEntity<List<TimetableDTO>> getWeeklySchedule(@RequestParam String start, @RequestParam String finish){
         return ResponseEntity.ok(classroomService.getWeeklyTimetable(LocalDateTime.parse(start),LocalDateTime.parse(finish)));
     }
+
+    @GetMapping("/teacher/schedule")
+    public ResponseEntity<List<TimetableDTO>> getTeachersWeeklySchedule(@RequestParam String start, @RequestParam String finish){
+        return ResponseEntity.ok(classroomService.getTeachersWeeklyTimetable(LocalDateTime.parse(start),LocalDateTime.parse(finish)));
+    }
+
+    @DeleteMapping("/{classroomId}/remove")
+    public ResponseEntity<Void> removeStudent(@PathVariable Integer classroomId, @RequestParam Integer studentId){
+        classroomService.removeStudentFromClassroom(classroomId,studentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

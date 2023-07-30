@@ -17,4 +17,6 @@ public interface ClassroomService {
     void addStudentsToClassroom (Integer classroomId, List<Integer> studentsId);
     void addClassSessionsToClass (Integer classroomId, @Valid ClassroomSessionRequestDTO req);
     List<TimetableDTO> getWeeklyTimetable(LocalDateTime start,LocalDateTime finish );
+    List<TimetableDTO> getTeachersWeeklyTimetable(LocalDateTime start, LocalDateTime finish );
+    void removeStudentFromClassroom(Integer classroomId,Integer studentsId);
 }

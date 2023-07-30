@@ -38,17 +38,27 @@ public class ClassroomServiceTest {
 
     @Test
     public void test_createClassroom_ok(){
-        Mockito.doReturn(new Classroom()).when(classroomRepository).save(Mockito.any());
-        ClassroomDTO out = toTest.createClassroom(new ClassroomDTO());
+        Classroom fakeClassroom = new Classroom();
+        fakeClassroom.setStartDate(LocalDate.now());
+        fakeClassroom.setEndDate(LocalDate.now());
+        Mockito.doReturn(fakeClassroom).when(classroomRepository).save(Mockito.any());
+        ClassroomDTO fakeDto = new ClassroomDTO();
+        fakeDto.setStartDate("2023-09-05");
+        fakeDto.setEndDate("2024-06-15");
+        ClassroomDTO out = toTest.createClassroom(fakeDto);
         assertNotNull(out);
     }
 
     @Test
     public void  test_update_classroom_ok(){
-        Mockito.doReturn(Optional.of(new Classroom())).when(classroomRepository).findById(Mockito.anyInt());
         Classroom fakeClassroom = new Classroom();
+        fakeClassroom.setStartDate(LocalDate.now());
+        fakeClassroom.setEndDate(LocalDate.now());
+        Mockito.doReturn(Optional.of(fakeClassroom)).when(classroomRepository).findById(Mockito.anyInt());
         Mockito.doReturn(fakeClassroom).when(classroomRepository).save(Mockito.any());
         ClassroomDTO fakeDto = new ClassroomDTO();
+        fakeDto.setStartDate("2023-09-05");
+        fakeDto.setEndDate("2024-06-15");
         ClassroomDTO out = toTest.updateClassroom(2,fakeDto);
         assertNotNull(out);
     }

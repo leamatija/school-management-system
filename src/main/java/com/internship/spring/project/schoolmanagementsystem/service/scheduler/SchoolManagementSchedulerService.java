@@ -37,8 +37,8 @@ public class SchoolManagementSchedulerService {
     }
 
 
-//     @Scheduled(fixedRate = 5000)
-   //@Scheduled(cron = "0 0 12 1 * ?")
+
+   @Scheduled(cron = "0 0 12 1 * ?")
     public void generateMonthlyReports() throws IOException {
         LocalDateTime currentDate = LocalDateTime.now();
         reportsService.getStudentReports(currentDate.minusMonths(1),currentDate);

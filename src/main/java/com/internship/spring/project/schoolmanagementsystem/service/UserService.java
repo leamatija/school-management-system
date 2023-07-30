@@ -1,5 +1,6 @@
 package com.internship.spring.project.schoolmanagementsystem.service;
 
+import com.internship.spring.project.schoolmanagementsystem.domain.dto.ChangePasswordDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.PageDTO;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.StudentReport;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.UserDTO;
@@ -18,4 +19,6 @@ public interface UserService {
     UserDTO findUserById (Integer id);
     Page<UserDTO> findUserByRole (String role, PageDTO pageDTO);
     Page<UserDTO> filterUsers(List<SearchQuery> searchQueries, PageDTO pageDTO);
+    void updatePassword(ChangePasswordDTO req);
+    void forgotPassword(String email);
 }

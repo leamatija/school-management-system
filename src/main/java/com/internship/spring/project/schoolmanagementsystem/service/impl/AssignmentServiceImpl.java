@@ -1,5 +1,6 @@
 package com.internship.spring.project.schoolmanagementsystem.service.impl;
 
+import com.internship.spring.project.schoolmanagementsystem.configuration.annotations.IsTeacherAllowed;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentRequest;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentResponse;
 import com.internship.spring.project.schoolmanagementsystem.domain.dto.AssignmentResultDTO;
@@ -12,6 +13,7 @@ import com.internship.spring.project.schoolmanagementsystem.repository.Assignmen
 import com.internship.spring.project.schoolmanagementsystem.repository.ClassSessionRepository;
 import com.internship.spring.project.schoolmanagementsystem.repository.UserRepository;
 import com.internship.spring.project.schoolmanagementsystem.service.AssignmentService;
+import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -37,11 +39,12 @@ public class AssignmentServiceImpl implements AssignmentService {
     private final AssignmentResultRepository assignmentResultRepository;
     private final UserRepository userRepository;
 
-    @PostAuthorize("@classSessionRepository.findFirstByIdAndTeacher_Id(#sessionId,authentication.name)!=null")
+    @IsTeacherAllowed
     @Override
     public AssignmentResponse createAssignment(Integer sessionId, AssignmentRequest a) {
         var session = classSessionRepository.findById(sessionId).orElseThrow(()-> new ResourceNotFoundException(format(CLASS_SESSION_NOT_FOUND,sessionId)));
-        var filename = UUID.randomUUID().toString().concat(".pdf");
+        var fileExtension = ".".concat(a.getFile().getContentType().split("/")[1]);
+        var filename = UUID.randomUUID().toString().concat(fileExtension);
         a.setName(a.getName());
         a.setFileName(filename);
         storageService.store(a.getFile(),filename);
@@ -66,6 +69,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public void deleteAssignment(Integer id) {
      assignmentRepository.findById(id).ifPresentOrElse(a-> {
@@ -73,6 +77,7 @@ public class AssignmentServiceImpl implements AssignmentService {
            assignmentRepository.save(a);
        },()-> new ResourceNotFoundException(format(ASSIGNMENT_NOT_FOUND,id)));
     }
+
 
     @Override
     public AssignmentResultDTO createAssignmentResult(Integer assignmentId, Integer studentId, AssignmentResultDTO req) {
@@ -102,6 +107,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .collect(Collectors.toList());
     }
 
+    @IsTeacherAllowed
     @Override
     public void deleteResult(Integer id) {
         assignmentRepository.findById(id).ifPresentOrElse(a->{
