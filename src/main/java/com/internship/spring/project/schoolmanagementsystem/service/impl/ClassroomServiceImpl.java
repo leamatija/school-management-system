@@ -29,6 +29,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -84,15 +85,33 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public void addStudentsToClassroom(Integer classroomId,List<Integer> studentsId) {
+    public String addStudentsToClassroom(Integer classroomId,List<Integer> studentsId) {
     Classroom c = classroomRepository.findById(classroomId).orElseThrow(()-> new ResourceNotFoundException(format(CLASSROOM_NOT_FOUND,classroomId)));
+    List<User> existedStudents = new ArrayList<>();
         if (studentsId.size()>c.getCapacity()){
             throw new StorageException(CAPACITY_EXCEEDED);
         }else {
-            List<User> students = userRepository.findAllById(studentsId);
-            c.setStudents(students);
+            userRepository.findAllById(studentsId)
+                    .forEach(u-> {
+                        var existingStudent = classroomRepository.findAllByActiveAndStudents_id(true,u.getId());
+                        if (existingStudent!=null&& existingStudent.size()>0){
+                            existedStudents.add(u);
+                        }else {
+                            c.getStudents().add(u);
+                        }
+                    });
             classroomRepository.save(c);
         }
+
+        String response = "OK";
+        if(existedStudents.size()>0){
+            var sb = new StringBuilder();
+            sb.append("Users with ids: ");
+            existedStudents.forEach(s -> sb.append(s.getId()).append(", "));
+            sb.append(" cannot be added on classroom because they are added to another classroom");
+            response = sb.toString();
+        }
+        return response;
     }
 
 

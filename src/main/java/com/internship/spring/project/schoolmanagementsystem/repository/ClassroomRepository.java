@@ -23,5 +23,7 @@ public interface ClassroomRepository extends JpaRepository<Classroom,Integer> {
             "inner join class_sessions cs on cr.id = cs.classroom_id inner join class_subjects csub on cs.subject_id = csub.id inner join users u on cs.teacher_id = u.id " +
             "where u.id = ? and start_time between ? and ?")
     List<TimetableDTO> getTeachersWeeklyTimetable( Integer teacherId,LocalDateTime start, LocalDateTime finish );
+
+    List<Classroom> findAllByActiveAndStudents_id(boolean active, Integer studentId);
 }
 

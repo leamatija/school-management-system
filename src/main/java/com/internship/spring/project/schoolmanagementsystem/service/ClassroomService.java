@@ -14,7 +14,7 @@ public interface ClassroomService {
     void deleteClassroom(Integer id);
     List<ClassroomDTO> getAllClassrooms();
     ClassroomDTO getClassroomById(Integer id);
-    void addStudentsToClassroom (Integer classroomId, List<Integer> studentsId);
+    String addStudentsToClassroom (Integer classroomId, List<Integer> studentsId);
     void addClassSessionsToClass (Integer classroomId, @Valid ClassroomSessionRequestDTO req);
     List<TimetableDTO> getWeeklyTimetable(LocalDateTime start,LocalDateTime finish );
     List<TimetableDTO> getTeachersWeeklyTimetable(LocalDateTime start, LocalDateTime finish );

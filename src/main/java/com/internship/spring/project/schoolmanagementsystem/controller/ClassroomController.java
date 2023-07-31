@@ -47,9 +47,8 @@ public class ClassroomController {
     }
 
     @PostMapping("/{classroomId}/students")
-        public ResponseEntity<Void> addStudentsToClassroom(@PathVariable Integer classroomId, @RequestBody ClassroomStudentsDTO classroomStudentsDTO){
-        classroomService.addStudentsToClassroom(classroomId,classroomStudentsDTO.getStudentsId());
-        return new ResponseEntity<>(HttpStatus.OK);
+        public ResponseEntity<String> addStudentsToClassroom(@PathVariable Integer classroomId, @RequestBody ClassroomStudentsDTO classroomStudentsDTO){
+        return ResponseEntity.ok(classroomService.addStudentsToClassroom(classroomId,classroomStudentsDTO.getStudentsId()));
     }
 
     @PostMapping("/{classroomId}/sessions")
